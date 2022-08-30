@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">Bubble LINE Catcher</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+
+    <!--個別実装String-->
+    <string name="title_switch_is_logging">Logging</string>
+    <string name="title_item_open_with_app">Open with LINE</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="text_main_activity_new_message">New message.</string>
+    <string name="text_notification_new_message">You have a new Message.</string>
+    <string name="text_unknown_member">Unknown Member</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="channel_MSG">Message Notification</string>
+    <string name="channel_MSG_description">Notification of  the LINE message logged from notification</string>
+</resources>

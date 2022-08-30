@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_open_with_LINE"
+        android:icon="@drawable/line_icon_round"
+        android:title="@string/title_item_open_with_app"
+        app:showAsAction="ifRoom" />
+</menu>

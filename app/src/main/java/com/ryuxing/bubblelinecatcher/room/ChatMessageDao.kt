@@ -9,7 +9,7 @@ interface ChatMessageDao {
     fun addMsg(message : ChatMessage):Long
 
     //Get All Message in Chat
-    @Query("SELECT * FROM messages WHERE chatId=:chatId ORDER BY date DESC")
+    @Query("SELECT * FROM messages WHERE chatId=:chatId ORDER BY date ASC")
     fun getMessages(chatId :String): List<ChatMessage>
 
     //Get Chat

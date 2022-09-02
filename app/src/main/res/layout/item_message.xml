@@ -7,11 +7,11 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/chat_icon_card"
+        android:id="@+id/message_icon_card"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginStart="10dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginBottom="15dp"
         app:cardCornerRadius="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,23 +19,23 @@
         app:layout_constraintVertical_bias="1.0">
 
         <ImageView
-            android:id="@+id/chat_icon_image"
+            android:id="@+id/message_icon_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:srcCompat="@tools:sample/avatars" />
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/chat_content_card"
+        android:id="@+id/message_content_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         app:cardBackgroundColor="#00FFFFFF"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="false"
-        app:layout_constraintBottom_toTopOf="@+id/chat_sender_text"
+        app:layout_constraintBottom_toTopOf="@+id/message_sender_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
         app:layout_wrapBehaviorInParent="horizontal_only">
 
         <TextView
-            android:id="@+id/chat_content_text"
+            android:id="@+id/message_content_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -57,33 +57,43 @@
             android:paddingTop="5dp"
             android:paddingEnd="5dp"
             android:paddingBottom="5dp"
-            android:text="ああああああ" />
+            android:text="ああああああ"
+            android:textColor="@android:color/primary_text_light" />
+
+        <ImageView
+            android:id="@+id/message_content_sticker_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:srcCompat="@tools:sample/avatars" />
 
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/chat_sender_text"
+        android:id="@+id/message_sender_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:layout_marginBottom="15dp"
         android:maxLines="1"
         android:minLines="1"
         android:text="Sender"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/chat_dete_text"
-        app:layout_constraintEnd_toStartOf="@+id/chat_dete_text"
-        app:layout_constraintStart_toStartOf="@+id/chat_content_card"
-        app:layout_constraintTop_toTopOf="@id/chat_dete_text" />
+        app:layout_constraintBottom_toBottomOf="@id/message_dete_text"
+        app:layout_constraintEnd_toStartOf="@+id/message_dete_text"
+        app:layout_constraintStart_toStartOf="@+id/message_content_card"
+        app:layout_constraintTop_toTopOf="@id/message_dete_text" />
 
     <TextView
-        android:id="@+id/chat_dete_text"
+        android:id="@+id/message_dete_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
         android:text="12/22(月) 22:22"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/chat_sender_text"
-        app:layout_constraintTop_toBottomOf="@+id/chat_content_card" />
+        app:layout_constraintStart_toEndOf="@+id/message_sender_text"
+        app:layout_constraintTop_toBottomOf="@+id/message_content_card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,6 +47,7 @@ class NotificationService {
             chatList.put(chat.chatId, chat)
         }
         fun removeMessages(chatId:String){
+            if(!notifyMessageList.containsKey(chatId)) return
             var list = notifyMessageList.getValue(chatId)
             for (msgId in list) {
                 msgList.remove(msgId)
@@ -107,11 +108,13 @@ class NotificationService {
             .addPerson(contact)
             .setShowWhen(true)
             .setStyle(messaging)
+            .setGroup("messages")
             .setContentIntent(pendingIntent)
             .setBubbleMetadata(
                 NotificationCompat.BubbleMetadata.Builder(pendingIntent, contact.icon!!)
                     .setSuppressNotification(suppressNotification)
                     .setAutoExpandBubble(autoExpandBubble)
+                    .setDesiredHeight(600)
                     .build()
             )
         if (isUpdate) builder.setOnlyAlertOnce(true)
@@ -134,6 +137,14 @@ class NotificationService {
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(chat.chatId.hashCode(), builder.build())
+        val summary = NotificationCompat.Builder(context, channelId_MSG)
+            .setSmallIcon(R.drawable.line_icon_round)
+            .setContentTitle(context.getString(R.string.text_main_activity_new_message))
+            .setGroup("messages")
+            .setGroupSummary(true)
+            .build()
+        notificationManager.notify(9999,summary)
+
     }
 
 }

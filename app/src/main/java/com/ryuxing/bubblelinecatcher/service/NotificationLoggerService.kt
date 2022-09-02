@@ -1,6 +1,7 @@
 package com.ryuxing.bubblelinecatcher.service
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Icon
 import android.service.notification.NotificationListenerService
@@ -9,6 +10,7 @@ import android.util.Log
 import androidx.core.app.Person
 import androidx.core.graphics.drawable.IconCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
 import com.ryuxing.bubblelinecatcher.data.Chat
@@ -61,9 +63,10 @@ class NotificationLoggerService:NotificationListenerService() {
             && sbn.notification.category == "msg") {
 
             Log.d("SERVICE_RECEIVE_LINE", "LINEの通知取得ができた")
+            Log.d("LINE_INTENT",sbn.notification.contentIntent.describeContents().toString())
             for (str in sbn.notification.extras.keySet()){
-                //Log.d("SERVICE_LINE_KEYSET",str)
-                //Log.d("SERVICE_LINE_DETAIL",sbn.notification.extras.get(str).toString())
+                Log.d("SERVICE_EXTRA_LINE_KEYSET",str)
+                Log.d("SERVICE_EXTRA_LINE_DETAIL",sbn.notification.extras.get(str).toString())
             }
             //メッセージの取得
             //まずは通知の中身を格納する
@@ -89,7 +92,7 @@ class NotificationLoggerService:NotificationListenerService() {
             var isSticker = false
             var content = "" as String
             if(notify.containsKey("line.sticker.url")){
-                isSticker = false
+                isSticker = true
                 content = notify.get("line.sticker.url").toString()
             }else{
                 content = notify.getString("android.text", getString(R.string.text_notification_new_message)) //メッセージ

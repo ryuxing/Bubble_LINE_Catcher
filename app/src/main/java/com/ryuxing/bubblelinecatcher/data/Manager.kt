@@ -1,5 +1,8 @@
 package com.ryuxing.bubblelinecatcher.data
 
+import com.ryuxing.bubblelinecatcher.activity.MainActivity
+import com.ryuxing.bubblelinecatcher.livedata.ChatViewModel
+import com.ryuxing.bubblelinecatcher.livedata.MainViewModel
 import com.ryuxing.bubblelinecatcher.service.NotificationService
 
 class Manager(db: Database) {
@@ -12,12 +15,16 @@ class Manager(db: Database) {
         val chat = chat
         val msg  = msg
         constructor(chat: Chat, msg: ChatMessage,start: Boolean =true) : this(chat,msg) {
+            //ブロードキャストかlivedataかでUI側にも送信
+            MainActivity.mainViewModel.updateChat(chat)
+            ChatViewModel.addMessageToChatView(msg)
             this.start()
         }
         override fun run() {
             cDao.addChat(chat)
             mDao.addMsg(msg)
-            //ブロードキャストかlivedataかでUI側にも送信
+
+
         }
     }
 
@@ -30,6 +37,7 @@ class Manager(db: Database) {
     fun read(chatId:String){
         NotificationService.removeMessages(chatId)
         cDao.readChat(chatId)
+        MainActivity.mainViewModel.updateRead(chatId)
     }
 
 }

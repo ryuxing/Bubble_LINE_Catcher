@@ -2,6 +2,7 @@ package com.ryuxing.bubblelinecatcher.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "messages")
 data class ChatMessage(
@@ -11,5 +12,5 @@ data class ChatMessage(
     val isStamp:Boolean,
     val sender :String,
     val date: Long
-    )
+    ):Serializable
 

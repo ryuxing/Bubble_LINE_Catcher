@@ -19,6 +19,9 @@
     <string name="text_notification_new_message">You have a new Message.</string>
     <string name="text_unknown_member">Unknown Member</string>
 
+    <!--個別実装単位-->
+    <string name="unit_day">th</string>
+
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>

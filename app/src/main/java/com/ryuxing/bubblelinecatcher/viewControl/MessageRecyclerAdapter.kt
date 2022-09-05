@@ -58,8 +58,8 @@ class MessageRecyclerAdapter(val list: List<ChatMessage>) : RecyclerView.Adapter
         //TextかStickerか
         if(message.isStamp){
             val cardParam = holder.messageCard.layoutParams
-            //cardParam.width = 450
-            //cardParam.height= 450
+            cardParam.width = 450
+            cardParam.height= 450
             holder.messageCard.layoutParams = cardParam
             holder.messageText.visibility = View.GONE
             holder.messageSticker.visibility = View.VISIBLE
@@ -68,12 +68,16 @@ class MessageRecyclerAdapter(val list: List<ChatMessage>) : RecyclerView.Adapter
             holder.messageText.text = "スタンプ "+ stickerUrl
             Sticker.setSticker(stickerUrl,stickerView)
         }else{
-            val cardParam = holder.messageCard.layoutParams
-            cardParam.width = ActionBar.LayoutParams.WRAP_CONTENT
-            cardParam.height= ActionBar.LayoutParams.WRAP_CONTENT
             holder.messageText.visibility = View.VISIBLE
+            val cardParam = holder.messageCard.layoutParams
+            cardParam.width = RecyclerView.LayoutParams.WRAP_CONTENT
+            cardParam.height= RecyclerView.LayoutParams.WRAP_CONTENT
+            val messageParam = holder.messageText.layoutParams
+            messageParam.width = ViewGroup.LayoutParams.WRAP_CONTENT
+
             holder.messageSticker.visibility = View.GONE
             holder.messageCard.layoutParams = cardParam
+            holder.messageText.layoutParams = messageParam
             holder.messageText.text = message.message
         }
     }

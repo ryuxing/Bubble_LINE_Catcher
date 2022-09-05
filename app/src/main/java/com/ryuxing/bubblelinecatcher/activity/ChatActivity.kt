@@ -94,6 +94,14 @@ class ChatActivity : AppCompatActivity() {
         }
         viewModel.messages.observe(this,observer)
         Log.d("OBSERVER_CHAT_START",chatId)
+        val actionBar = supportActionBar
+        val room = App.dataManager.cDao.getChat(chatId).first()
+        var roomName = ""
+        if (room.isGroup){
+            roomName = "\uD83D\uDC65 "
+        }
+        roomName += room.chatName
+        actionBar!!.title = roomName
     }
 
     override fun onStart() {

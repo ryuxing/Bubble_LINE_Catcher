@@ -38,7 +38,10 @@ class ChatRecyclerAdapter(val list: List<Chat>) : RecyclerView.Adapter<ChatViewH
         holder.chatName.text = chat.chatName
         //本文にSenderを入れるかの分岐
         var message = chat.lastMsg
-        if(chat.isGroup) message = chat.lastSenderName + ": "+message
+        if(chat.isGroup){
+            holder.chatName.text = "\uD83D\uDC65 "+ chat.chatName
+            message = chat.lastSenderName + ": "+message
+        }
         holder.lastMsg.text = message
 
         if(!chat.hasUnread){
@@ -77,6 +80,10 @@ class ChatRecyclerAdapter(val list: List<Chat>) : RecyclerView.Adapter<ChatViewH
             roomList.add(0,id)
             notifyItemInserted(0)
 
+        }
+        else if(index==0){
+            chatList[0] = chat
+            notifyItemChanged(0)
         }
         else{
             chatList.removeAt(index)

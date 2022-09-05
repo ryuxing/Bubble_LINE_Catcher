@@ -1,6 +1,7 @@
 package com.ryuxing.bubblelinecatcher.ui
 
 import android.view.View
+import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -16,6 +17,6 @@ class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val messageDate: TextView = itemView.findViewById(R.id.message_dete_text)
     val messageCard: CardView = itemView.findViewById(R.id.message_content_card)
     val messageText: TextView = itemView.findViewById(R.id.message_content_text)
-    val messageSticker: ImageView = itemView.findViewById(R.id.message_content_sticker_image)
+    val messageSticker: WebView = itemView.findViewById(R.id.message_content_sticker_image)
 
 }

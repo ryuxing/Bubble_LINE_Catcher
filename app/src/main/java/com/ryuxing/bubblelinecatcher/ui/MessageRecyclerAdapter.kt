@@ -1,5 +1,6 @@
 package com.ryuxing.bubblelinecatcher.ui
 
+import android.app.ActionBar
 import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -8,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebSettings
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,7 @@ import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
 import com.ryuxing.bubblelinecatcher.data.ChatMessage
 import com.ryuxing.bubblelinecatcher.data.MyDate
+import com.ryuxing.bubblelinecatcher.data.Sticker
 import com.ryuxing.bubblelinecatcher.livedata.ChatViewModel
 import java.io.BufferedInputStream
 import java.io.File
@@ -59,11 +62,23 @@ class MessageRecyclerAdapter(val list: List<ChatMessage>) : RecyclerView.Adapter
         }
         //TextかStickerか
         if(message.isStamp){
-            //holder.messageText.visibility = View.GONE
+            val cardParam = holder.messageCard.layoutParams
+            //cardParam.width = 450
+            //cardParam.height= 450
+            holder.messageCard.layoutParams = cardParam
+            holder.messageText.visibility = View.GONE
             holder.messageSticker.visibility = View.VISIBLE
             val stickerUrl = message.message
+            val stickerView = holder.messageSticker
             holder.messageText.text = "スタンプ "+ stickerUrl
+            Sticker.setSticker(stickerUrl,stickerView)
         }else{
+            val cardParam = holder.messageCard.layoutParams
+            cardParam.width = ActionBar.LayoutParams.WRAP_CONTENT
+            cardParam.height= ActionBar.LayoutParams.WRAP_CONTENT
+            holder.messageText.visibility = View.VISIBLE
+            holder.messageSticker.visibility = View.GONE
+            holder.messageCard.layoutParams = cardParam
             holder.messageText.text = message.message
         }
     }

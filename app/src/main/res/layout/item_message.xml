@@ -44,21 +44,20 @@
 
         <TextView
             android:id="@+id/message_content_text"
+            style="@style/Theme.BubbleLineCatcher.Text.Body1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="0dp"
             android:autoLink="all"
             android:background="@drawable/message_incoming"
-            android:backgroundTint="@color/chat_sender"
             android:maxEms="20"
             android:paddingStart="10dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="5dp"
-            android:paddingBottom="5dp"
-            android:text="ああああああ"
-            android:textColor="@android:color/primary_text_light" />
+            android:paddingLeft="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:text="aaa" />
 
         <WebView
             android:id="@+id/message_content_sticker_image"
@@ -72,6 +71,7 @@
 
     <TextView
         android:id="@+id/message_sender_text"
+        style="@style/Theme.BubbleLineCatcher.Text.Body1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -79,6 +79,7 @@
         android:maxLines="1"
         android:minLines="1"
         android:text="Sender"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/message_dete_text"
         app:layout_constraintEnd_toStartOf="@+id/message_dete_text"
@@ -87,6 +88,7 @@
 
     <TextView
         android:id="@+id/message_dete_text"
+        style="@style/Theme.BubbleLineCatcher.Text.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"

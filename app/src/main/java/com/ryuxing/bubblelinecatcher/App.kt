@@ -27,6 +27,7 @@ class App :Application() {
         dataManager = Manager(db)
         context = applicationContext
         Log.d("App_INIT","Initialize Completed.")
+        //ダイナミックカラー
         DynamicColors.applyToActivitiesIfAvailable(this)
     }
 

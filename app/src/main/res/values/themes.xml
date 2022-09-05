@@ -42,9 +42,12 @@
         <item name="colorOnSurfaceInverse">@color/md_theme_light_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_light_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
-
     </style>
-
+    <style name="Theme.BubbleLineCatcher.Text.Body1" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">?attr/colorControlNormal</item>
+        <item name="android:textColorLink">?attr/colorPrimaryDark</item>
+        <item name="backgroundTint">?attr/colorPrimaryContainer</item>
+    </style>
     <style name="Theme.BubbleLINECatcher.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

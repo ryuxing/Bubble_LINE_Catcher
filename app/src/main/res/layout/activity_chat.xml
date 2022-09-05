@@ -19,22 +19,17 @@
 
     <Button
         android:id="@+id/message_goto_latest_button"
+        style="@style/Widget.Material3.Button"
         android:layout_width="wrap_content"
-        android:layout_height="50dip"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="20dp"
         android:contentDescription="Go to latest text"
-        android:maxWidth="100dip"
-        android:minWidth="20dip"
-        android:minHeight="20dip"
-        android:paddingLeft="12dp"
-        android:paddingTop="10dp"
-        android:paddingRight="12dp"
-        android:paddingBottom="10dp"
         android:text="▼"
-        app:cornerRadius="25dip"
+        android:minWidth="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/message_recycler_view"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />        <!--app:cornerRadius="25dip"-->
+
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/textInputEditText"

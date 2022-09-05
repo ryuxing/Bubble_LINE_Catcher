@@ -1,7 +1,5 @@
-package com.ryuxing.bubblelinecatcher.ui
+package com.ryuxing.bubblelinecatcher.viewControl
 
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -9,9 +7,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
 import com.ryuxing.bubblelinecatcher.activity.ChatActivity
 import com.ryuxing.bubblelinecatcher.data.Chat

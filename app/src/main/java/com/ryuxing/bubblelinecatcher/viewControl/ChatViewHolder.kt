@@ -1,4 +1,4 @@
-package com.ryuxing.bubblelinecatcher.ui
+package com.ryuxing.bubblelinecatcher.viewControl
 
 import android.view.View
 import android.widget.ImageView

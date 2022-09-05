@@ -76,7 +76,8 @@ class NotificationLoggerService:NotificationListenerService() {
             var path = ""
             //Iconをキャッシュファイルに書き込み
             try {
-                var image = icon.loadDrawable(this).toBitmap()
+                var image = icon.loadDrawable(this)!!.toBitmap()
+                if(image==null) throw NullPointerException("No image loaded from icon.")
                 Log.d("IMAGE", image.toString())
                 var file  = File( this.externalCacheDir,"icon_"+mesId)
                 val baos = ByteArrayOutputStream()

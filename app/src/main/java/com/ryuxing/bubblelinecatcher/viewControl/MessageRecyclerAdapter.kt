@@ -1,24 +1,19 @@
-package com.ryuxing.bubblelinecatcher.ui
+package com.ryuxing.bubblelinecatcher.viewControl
 
 import android.app.ActionBar
-import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebSettings
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
 import com.ryuxing.bubblelinecatcher.data.ChatMessage
 import com.ryuxing.bubblelinecatcher.data.MyDate
 import com.ryuxing.bubblelinecatcher.data.Sticker
-import com.ryuxing.bubblelinecatcher.livedata.ChatViewModel
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream

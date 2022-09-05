@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.room.Room
+import com.google.android.material.color.DynamicColors
 import com.ryuxing.bubblelinecatcher.data.Manager
 import com.ryuxing.bubblelinecatcher.data.Database
 
@@ -26,6 +27,7 @@ class App :Application() {
         dataManager = Manager(db)
         context = applicationContext
         Log.d("App_INIT","Initialize Completed.")
+        DynamicColors.applyToActivitiesIfAvailable(this)
     }
 
 }

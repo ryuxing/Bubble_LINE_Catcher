@@ -10,14 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
 import com.ryuxing.bubblelinecatcher.data.Chat
 import com.ryuxing.bubblelinecatcher.databinding.ActivityMainBinding
 import com.ryuxing.bubblelinecatcher.livedata.MainViewModel
-import com.ryuxing.bubblelinecatcher.ui.ChatRecyclerAdapter
+import com.ryuxing.bubblelinecatcher.viewControl.ChatRecyclerAdapter
 
 
 class MainActivity : AppCompatActivity() {

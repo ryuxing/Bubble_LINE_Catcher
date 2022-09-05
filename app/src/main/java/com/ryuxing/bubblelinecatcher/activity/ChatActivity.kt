@@ -1,30 +1,20 @@
 package com.ryuxing.bubblelinecatcher.activity
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.IBinder
-import android.os.Message
-import android.os.Messenger
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import androidx.core.widget.NestedScrollView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
-import com.ryuxing.bubblelinecatcher.data.Chat
 import com.ryuxing.bubblelinecatcher.data.ChatMessage
 import com.ryuxing.bubblelinecatcher.databinding.ActivityChatBinding
 import com.ryuxing.bubblelinecatcher.livedata.ChatViewModel
-import com.ryuxing.bubblelinecatcher.service.NotificationLoggerService
-import com.ryuxing.bubblelinecatcher.service.NotificationService
-import com.ryuxing.bubblelinecatcher.ui.MessageRecyclerAdapter
+import com.ryuxing.bubblelinecatcher.viewControl.MessageRecyclerAdapter
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding

@@ -49,7 +49,7 @@ class NotificationLoggerService:NotificationListenerService() {
     override fun onDestroy() {
         super.onDestroy()
         IS_SERVICE_RUNNING = false
-        Log.d("SERVICE_DESTROY","Service Destroyed!!!!!")
+        Log.d("SERVICE_DESTROY","Service Destroyed")
     }
 
     @SuppressLint("RestrictedApi")
@@ -62,12 +62,11 @@ class NotificationLoggerService:NotificationListenerService() {
         if(sbn.packageName == "jp.naver.line.android"
             && sbn.notification.category == "msg") {
 
-            Log.d("SERVICE_RECEIVE_LINE", "LINEの通知取得ができた")
             Log.d("LINE_INTENT",sbn.notification.contentIntent.describeContents().toString())
-            for (str in sbn.notification.extras.keySet()){
+            /*for (str in sbn.notification.extras.keySet()){
                 Log.d("SERVICE_EXTRA_LINE_KEYSET",str)
                 Log.d("SERVICE_EXTRA_LINE_DETAIL",sbn.notification.extras.get(str).toString())
-            }
+            }*/
             //メッセージの取得
             //まずは通知の中身を格納する
             val notify = sbn.notification.extras
@@ -78,12 +77,10 @@ class NotificationLoggerService:NotificationListenerService() {
             try {
                 var image = icon.loadDrawable(this)!!.toBitmap()
                 if(image==null) throw NullPointerException("No image loaded from icon.")
-                Log.d("IMAGE", image.toString())
                 var file  = File( this.externalCacheDir,"icon_"+mesId)
                 val baos = ByteArrayOutputStream()
                 image.compress(Bitmap.CompressFormat.PNG, 100, baos)
                 file.writeBytes(baos.toByteArray())
-                Log.d("ICON_URI",file.path)
                 path = file.path
             }catch (e:Exception){
                 Log.w("ERROR While ICON SAVE",e.toString())
@@ -131,7 +128,8 @@ class NotificationLoggerService:NotificationListenerService() {
                 notify.getString("android.text", getString(R.string.text_main_activity_new_message)),
                 msg.sender,
                 path,
-                msg.date
+                msg.date,
+                true
             )
             //オブジェクトを通知用メッセージリストに格納
             val person = Person.Builder().setName(msg.sender).setIcon(IconCompat.createFromIcon(icon)).build()
@@ -139,7 +137,6 @@ class NotificationLoggerService:NotificationListenerService() {
             if (!isExist) NotificationService.addChat(chat)
             //送信者の情報を格納
             chat.pushShortcut(person, this)
-            Log.d("NOTIFICATION_MESSAGE", NotificationService.notifyMessageList.toString())
             notificationService.sendNotification(msg, chat, person, isExist, this)
             App.dataManager.addMessage(chat, msg,start=true)
         }

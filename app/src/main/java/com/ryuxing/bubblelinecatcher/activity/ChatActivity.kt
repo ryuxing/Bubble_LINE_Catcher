@@ -26,8 +26,6 @@ class ChatActivity : AppCompatActivity() {
         //IntentからChatId取得
         val chatIdFromIntent = intent.getStringExtra("chatId")
         val chatIdFromURI    = (intent.dataString?:"/chat/").split("/chat/")[1]
-        Log.d("Chat_Id", chatIdFromIntent.toString())
-        Log.d("Chat_Id", chatIdFromURI.toString())
         if(chatIdFromURI==""&& chatIdFromIntent==null) finish()
         else if(chatIdFromURI=="") chatId = chatIdFromIntent.toString()
         else chatId = chatIdFromURI
@@ -42,7 +40,7 @@ class ChatActivity : AppCompatActivity() {
         rv.setHasFixedSize(true)
         rv.layoutManager = layoutManager
         rv.adapter = messageAdapter
-        Log.d("Message",App.dataManager.mDao.getMessages(chatId).toString())
+        //Log.d("Message",App.dataManager.mDao.getMessages(chatId).toString())
         findViewById<Button>(R.id.message_goto_latest_button).setOnClickListener(View.OnClickListener {view ->
             val scrollView = findViewById<RecyclerView>(R.id.message_recycler_view)!!
 
@@ -80,10 +78,8 @@ class ChatActivity : AppCompatActivity() {
                 findViewById<Button>(R.id.message_goto_latest_button).text = text
 
             }
-            Log.d("OBSERVE_CHAT",chatId)
         }
         viewModel.messages.observe(this,observer)
-        Log.d("OBSERVER_CHAT_START",chatId)
         val actionBar = supportActionBar
         val room = App.dataManager.cDao.getChat(chatId).first()
         var roomName = ""
@@ -104,7 +100,6 @@ class ChatActivity : AppCompatActivity() {
     override fun onDestroy() {
         ChatViewModel.removeChatViewModel(chatId)
         super.onDestroy()
-        //broadcastReceiverを破棄
     }
 
 }

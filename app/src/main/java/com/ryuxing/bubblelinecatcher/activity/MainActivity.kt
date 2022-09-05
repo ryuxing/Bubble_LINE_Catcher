@@ -33,13 +33,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).apply{setContentView(this.root)}
         //Log.d("Database", App.dataManager.cDao.getAllChats().toString())
-        val chatList : List<Chat> = App.dataManager.cDao.getAllChats()
-        val chatAdapter = ChatRecyclerAdapter(chatList)
+        val chatAdapter = ChatRecyclerAdapter()
         val layoutManager = LinearLayoutManager(this)
         rv = findViewById<RecyclerView>(R.id.chat_recycler_view)
+        chatAdapter.reload()
         rv.setHasFixedSize(true)
         rv.layoutManager = layoutManager
         rv.adapter = chatAdapter
+        chatAdapter.notifyDataSetChanged()
         //ViewModel追加
         updateObserver = Observer<Chat>{
             chatAdapter.updateList(it)
@@ -51,11 +52,17 @@ class MainActivity : AppCompatActivity() {
         }
         mainViewModel.liveChat.observeForever(updateObserver)
         mainViewModel.read.observeForever(readObserver)
+        Log.d("onCreated","created")
     }
 
+    override fun onStart() {
+        Log.d("onStarted","started")
+        super.onStart()
+    }
     override fun onDestroy() {
         mainViewModel.liveChat.removeObserver(updateObserver)
         mainViewModel.read.removeObserver(readObserver)
+        Log.d("onDestroy","destroyed")
         super.onDestroy()
     }
 

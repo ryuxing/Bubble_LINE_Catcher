@@ -1,5 +1,6 @@
 package com.ryuxing.bubblelinecatcher.data
 
+import android.util.Log
 import com.ryuxing.bubblelinecatcher.activity.MainActivity
 import com.ryuxing.bubblelinecatcher.livedata.ChatViewModel
 import com.ryuxing.bubblelinecatcher.livedata.MainViewModel
@@ -16,6 +17,7 @@ class Manager(db: Database) {
         val msg  = msg
         constructor(chat: Chat, msg: ChatMessage,start: Boolean =true) : this(chat,msg) {
             //ブロードキャストかlivedataかでUI側にも送信
+            chat.hasUnread = true
             MainActivity.mainViewModel.updateChat(chat)
             ChatViewModel.addMessageToChatView(msg)
             this.start()
@@ -38,6 +40,7 @@ class Manager(db: Database) {
         NotificationService.removeMessages(chatId)
         cDao.readChat(chatId)
         MainActivity.mainViewModel.updateRead(chatId)
+        Log.d("BLC_READED",chatId)
     }
 
 }

@@ -50,6 +50,7 @@ class MessageRecyclerAdapter(val list: List<ChatMessage>) : RecyclerView.Adapter
                 val stream: InputStream = FileInputStream(File( App.context.externalCacheDir,"icon_"+message.msgId))
                 icon = BitmapFactory.decodeStream(BufferedInputStream(stream))
                 holder.messageIcon.setImageBitmap(icon)
+                stream.close()
             }catch (e : Exception){
                 holder.messageIcon.setImageResource(R.drawable.person_icon)
                 Log.w("MESSAGE_ICON_LOAD_FAILURE",e.stackTraceToString())
@@ -80,6 +81,7 @@ class MessageRecyclerAdapter(val list: List<ChatMessage>) : RecyclerView.Adapter
             holder.messageText.layoutParams = messageParam
             holder.messageText.text = message.message
         }
+
     }
 
     override fun getItemCount() = messageList.size

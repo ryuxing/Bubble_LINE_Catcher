@@ -124,7 +124,6 @@ class NotificationService {
         try {
             val source  = ImageDecoder.createSource(File(context.externalCacheDir,"icon_"+msg.chatId))
             bitmap = ImageDecoder.decodeBitmap(source)
-            Log.d("FINISH TO CATCH ICON FILE",bitmap.toString())
         }catch(e: Exception){
             //代替画像を指定
             Log.w("IMAGE_CATCH_ERROR", e.toString())

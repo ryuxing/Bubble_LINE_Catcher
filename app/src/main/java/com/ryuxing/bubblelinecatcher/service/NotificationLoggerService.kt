@@ -19,6 +19,10 @@ import com.ryuxing.bubblelinecatcher.data.ChatMessage
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.lang.Exception
+import java.sql.Time
+import java.util.*
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.DurationUnit
 
 
 class NotificationLoggerService:NotificationListenerService() {
@@ -61,9 +65,47 @@ class NotificationLoggerService:NotificationListenerService() {
         if(!IS_SERVICE_ENABLED) return
         if(sbn == null) return
         //通知がLINEかつカテゴリーがmsgの時に処理を継続する
-        if(sbn.packageName == "jp.naver.line.android"
+        lateinit var msg:ChatMessage
+        val notify = sbn.notification.extras
+        var path = ""
+        lateinit var icon :Icon
+
+        if(sbn.packageName == "com.kiwibrowser.browser"){
+            for (str in sbn.notification.extras.keySet()){
+                Log.d("SERVICE_EXTRA_LINE_KEYSET",str)
+                Log.d("SERVICE_EXTRA_LINE_DETAIL",sbn.notification.extras.get(str).toString())
+            }
+            Log.d("sbn.notification",sbn.notification.toString())
+            val notify = sbn.notification.extras
+            val mesId = Date().time.milliseconds.toLong(DurationUnit.MICROSECONDS)*100+(Math.random()*100).toLong()
+            icon = notify.get("android.largeIcon") as Icon
+            //Iconをキャッシュファイルに書き込み
+            try {
+                var image = icon.loadDrawable(this)!!.toBitmap()
+                if(image==null) throw NullPointerException("No image loaded from icon.")
+                var file  = File( this.externalCacheDir,"icon_"+mesId)
+                val baos = ByteArrayOutputStream()
+                image.compress(Bitmap.CompressFormat.PNG, 100, baos)
+                file.writeBytes(baos.toByteArray())
+                path = file.path
+            }catch (e:Exception){
+                Log.w("ERROR While ICON SAVE",e.toString())
+            }
+            val content = notify.getString("android.text", getString(R.string.text_notification_new_message)) //メッセージ
+            msg = ChatMessage(
+                mesId, //メッセージid
+                notify.getString("android.title", getString(R.string.text_unknown_member)), //chat id
+                content,  //本文
+                false, //テキストorスタンプ
+                notify.getString("android.title", getString(R.string.text_unknown_member)), //送信者
+                sbn.notification.`when`//メッセージ受信時刻
+            )
+
+
+        }else if(sbn.packageName == "jp.naver.line.android"
             && sbn.notification.category == "msg") {
 
+            Log.d("LINE_INTENT",sbn.notification.contentIntent.describeContents().toString())
             /*for (str in sbn.notification.extras.keySet()){
                 Log.d("SERVICE_EXTRA_LINE_KEYSET",str)
                 Log.d("SERVICE_EXTRA_LINE_DETAIL",sbn.notification.extras.get(str).toString())
@@ -73,12 +115,11 @@ class NotificationLoggerService:NotificationListenerService() {
             val notify = sbn.notification.extras
             val mesId = notify.getString("line.message.id", "0").toLong()
             var icon = notify.get("android.largeIcon") as Icon
-            var path = ""
             //Iconをキャッシュファイルに書き込み
             try {
                 var image = icon.loadDrawable(this)!!.toBitmap()
-                if(image==null) throw NullPointerException("No image loaded from icon.")
-                var file  = File( this.externalCacheDir,"icon_"+mesId)
+                if (image == null) throw NullPointerException("No image loaded from icon.")
+                var file = File(this.externalCacheDir, "icon_" + mesId)
                 val baos = ByteArrayOutputStream()
                 image.compress(Bitmap.CompressFormat.PNG, 100, baos)
                 file.writeBytes(baos.toByteArray())
@@ -90,11 +131,14 @@ class NotificationLoggerService:NotificationListenerService() {
             //スタンプだった場合は本文ににURLを入れる
             var isSticker = false
             var content = "" as String
-            if(notify.containsKey("line.sticker.url")){
+            if (notify.containsKey("line.sticker.url")) {
                 isSticker = true
                 content = notify.get("line.sticker.url").toString()
-            }else{
-                content = notify.getString("android.text", getString(R.string.text_notification_new_message)) //メッセージ
+            } else {
+                content = notify.getString(
+                    "android.text",
+                    getString(R.string.text_notification_new_message)
+                ) //メッセージ
             }
             //通知メッセージをChatMessageに格納
             var msg = ChatMessage(
@@ -107,40 +151,42 @@ class NotificationLoggerService:NotificationListenerService() {
             )
             //ルームID不明はここで切る
             if (msg.chatId == "0") return
-
-            //チャットのメッセージが通知からキャンセルされているか見る
-            var notifs = super.getActiveNotifications()
-            val hash = msg.chatId.hashCode()
-            var bool = false
-            for (noti in notifs){
-                if(noti.id == hash) {
-                    bool = true
-                }
+        }else return
+        //チャットのメッセージが通知からキャンセルされているか見る
+        var notifs = super.getActiveNotifications()
+        val hash = msg.chatId.hashCode()
+        var bool = false
+        for (noti in notifs){
+            if(noti.id == hash) {
+                bool = true
             }
-            if(bool == false){
-                NotificationService.removeMessages(msg.chatId)
-            }
-
-            //チャットルーム情報を格納
-            val chat = Chat(
-                msg.chatId, //Chat ID
-                notify.getString("android.subText", msg.sender), //Chat Name
-                notify.getString("android.subText", "") != "", //グループかどうか
-                notify.getString("android.text", getString(R.string.text_main_activity_new_message)),
-                msg.sender,
-                path,
-                msg.date,
-                true
-            )
-            //オブジェクトを通知用メッセージリストに格納
-            val person = Person.Builder().setName(msg.sender).setIcon(IconCompat.createFromIcon(icon)).build()
-            val isExist = NotificationService.addMessage(msg,person)
-            if (!isExist) NotificationService.addChat(chat)
-            //送信者の情報を格納
-            chat.pushShortcut(person, this)
-            notificationService.sendNotification(msg, chat, person, isExist, this)
-            App.dataManager.addMessage(chat, msg,start=true)
         }
+        if(bool == false){
+            NotificationService.removeMessages(msg.chatId)
+        }
+
+        //チャットルーム情報を格納
+        val chat = Chat(
+            msg.chatId, //Chat ID
+            notify.getString("android.subText", msg.sender), //Chat Name
+            notify.getString("android.subText", "") != "", //グループかどうか
+            notify.getString("android.text", getString(R.string.text_main_activity_new_message)),
+            msg.sender,
+            path,
+            msg.date,
+            true
+        )
+        Log.d("Chat",chat.toString())
+        Log.d("Message",msg.toString())
+        //オブジェクトを通知用メッセージリストに格納
+        val person = Person.Builder().setName(msg.sender).setIcon(IconCompat.createFromIcon(icon)).build()
+        val isExist = NotificationService.addMessage(msg,person)
+        if (!isExist) NotificationService.addChat(chat)
+        //送信者の情報を格納
+        chat.pushShortcut(person, this)
+        notificationService.sendNotification(msg, chat, person, isExist, this)
+        App.dataManager.addMessage(chat, msg,start=true)
+
     }
 
 }

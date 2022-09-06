@@ -1,15 +1,25 @@
 package com.ryuxing.bubblelinecatcher.activity
 
 
+import android.content.Intent
+import android.content.pm.LauncherApps
+import android.content.pm.PackageManager
+import android.content.pm.ShortcutManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcel
+import android.os.UserHandle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ryuxing.bubblelinecatcher.App
+import com.ryuxing.bubblelinecatcher.App.Companion.context
 import com.ryuxing.bubblelinecatcher.R
 import com.ryuxing.bubblelinecatcher.data.ChatMessage
 import com.ryuxing.bubblelinecatcher.databinding.ActivityChatBinding
@@ -93,6 +103,8 @@ class ChatActivity : AppCompatActivity() {
         }
         roomName += room.chatName
         actionBar!!.title = roomName
+
+
     }
 
     override fun onStart() {
@@ -105,6 +117,29 @@ class ChatActivity : AppCompatActivity() {
     override fun onDestroy() {
         ChatViewModel.removeChatViewModel(chatId)
         super.onDestroy()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_chat,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.item_open_with_LINE ->{
+                val intent = Intent().also { i->
+                    i.setClassName("jp.naver.line.android","jp.naver.line.android.activity.shortcut.ShortcutLauncherActivity")
+                    i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    i.putExtra("shortcutType","chatmid")
+                    i.putExtra("shortcutTargetId",chatId)
+                    i.putExtra("shortcutTargetName","")
+                    i.putExtra("shortcutFromOS",false)
+                }
+                startActivity(intent)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
     private inner class scrollListener: RecyclerView.OnScrollListener(){
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_message"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:paddingLeft="20dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/message_icon_card"
@@ -30,7 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         app:cardBackgroundColor="#00FFFFFF"
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
@@ -52,12 +54,12 @@
             android:autoLink="all"
             android:background="@drawable/message_incoming"
             android:maxEms="20"
-            android:paddingStart="10dp"
-            android:paddingLeft="10dp"
+            android:minWidth="45dp"
+            android:paddingStart="15dp"
             android:paddingTop="10dp"
-            android:paddingEnd="10dp"
+            android:paddingEnd="15dp"
             android:paddingBottom="10dp"
-            android:text="aaa" />
+            android:text="" />
 
         <WebView
             android:id="@+id/message_content_sticker_image"

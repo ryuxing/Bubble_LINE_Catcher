@@ -16,12 +16,14 @@
 -->
 <layer-list
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:width="50dp"
-        android:gravity="end"
+    <item android:width="20dp"
+        android:height="24dp"
+        android:gravity="bottom|right"
+        android:bottom="0dp"
         android:right="0dp"
         >
         <rotate
-            android:fromDegrees="-50"
+            android:fromDegrees="-40"
             android:pivotX="100%"
             android:pivotY="100%"
             android:toDegrees="0">
@@ -30,10 +32,11 @@
             </shape>
         </rotate>
     </item>
-    <item android:right="10dp">
+    <item android:right="0dp">
         <shape android:shape="rectangle">
             <solid android:color="#fff" />
-            <corners android:radius="30dp" />
+            <corners android:radius="20dp" />
+
         </shape>
     </item>
 </layer-list>

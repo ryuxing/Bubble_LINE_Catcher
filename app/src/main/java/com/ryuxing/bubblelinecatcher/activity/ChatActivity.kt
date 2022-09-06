@@ -44,7 +44,7 @@ class ChatActivity : AppCompatActivity() {
         findViewById<Button>(R.id.message_goto_latest_button).setOnClickListener(View.OnClickListener {view ->
             val scrollView = findViewById<RecyclerView>(R.id.message_recycler_view)!!
 
-            scrollView.scrollToPosition((scrollView.adapter!!.itemCount) -1)
+            scrollView.smoothScrollToPosition((scrollView.adapter!!.itemCount) -1)
             findViewById<Button>(R.id.message_goto_latest_button).text = "▼"
 
             Log.d("COUNT",messageAdapter.itemCount.toString())
@@ -66,10 +66,12 @@ class ChatActivity : AppCompatActivity() {
                 //スクロールするかどうか
                 if(prevPos==prevItem){
                     val scrollView = findViewById<RecyclerView>(R.id.message_recycler_view)!!
-                    scrollView.scrollToPosition((scrollView.adapter!!.itemCount) -1)
                     unread = 0
+                    scrollView.smoothScrollToPosition((scrollView.adapter!!.itemCount) -1)
+                    findViewById<Button>(R.id.message_goto_latest_button).alpha = 0.6F
                 }else{
                     unread +=count
+                    findViewById<Button>(R.id.message_goto_latest_button).alpha = 1F
                 }
                 var text = "▼"
                 if(unread>0){
@@ -80,6 +82,9 @@ class ChatActivity : AppCompatActivity() {
             }
         }
         viewModel.messages.observe(this,observer)
+        findViewById<Button>(R.id.message_goto_latest_button).alpha = 0.6F
+
+        rv.addOnScrollListener(scrollListener())
         val actionBar = supportActionBar
         val room = App.dataManager.cDao.getChat(chatId).first()
         var roomName = ""
@@ -101,5 +106,20 @@ class ChatActivity : AppCompatActivity() {
         ChatViewModel.removeChatViewModel(chatId)
         super.onDestroy()
     }
-
+    private inner class scrollListener: RecyclerView.OnScrollListener(){
+        override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            if(newState == RecyclerView.SCROLL_STATE_DRAGGING){
+                findViewById<Button>(R.id.message_goto_latest_button).alpha = 1F
+            }else{
+                val mgr = recyclerView.layoutManager as LinearLayoutManager
+                if(mgr.findLastVisibleItemPosition()<mgr.itemCount-1){
+                    findViewById<Button>(R.id.message_goto_latest_button).alpha = 1F
+                }else{
+                    findViewById<Button>(R.id.message_goto_latest_button).text = "▼"
+                    findViewById<Button>(R.id.message_goto_latest_button).alpha = 0.6F
+                }
+            }
+            super.onScrollStateChanged(recyclerView, newState)
+        }
+    }
 }

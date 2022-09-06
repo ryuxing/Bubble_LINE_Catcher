@@ -81,6 +81,7 @@ class MessageRecyclerAdapter(val list: List<ChatMessage>) : RecyclerView.Adapter
             holder.messageText.layoutParams = messageParam
             holder.messageText.text = message.message
         }
+        holder.wrapper
 
     }
 
@@ -90,19 +91,20 @@ class MessageRecyclerAdapter(val list: List<ChatMessage>) : RecyclerView.Adapter
         var changeIndex = ArrayList<Int>()
         var addCount = 0
         val lastIndex = itemCount
-        map.forEach{(mesId,message)->
+        map.forEach { (mesId, message) ->
             val index = mesIdList.indexOf(mesId)
-            if(index==-1){
+            if (index == -1 || index > itemCount-1) {
                 mesIdList.add(mesId)
                 messageList.add(message)
-                addCount ++
-            }else{
+                addCount++
+            } else {
                 messageList[index] = message
                 changeIndex.add(index)
             }
-        }
-        for (index in changeIndex){
-            notifyItemChanged(index)
+
+            for (index in changeIndex) {
+                notifyItemChanged(index)
+            }
         }
         notifyItemRangeInserted(lastIndex,addCount)
         return addCount

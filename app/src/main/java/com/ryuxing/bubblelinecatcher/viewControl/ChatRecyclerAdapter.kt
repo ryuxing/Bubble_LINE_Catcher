@@ -132,6 +132,7 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
     fun updateRead(id:String){
         val index = roomList.indexOf(id)
         if(index==-1) return
+        else if(index > itemCount-1) return
         chatList[index].hasUnread = false
         notifyItemChanged(index)
 

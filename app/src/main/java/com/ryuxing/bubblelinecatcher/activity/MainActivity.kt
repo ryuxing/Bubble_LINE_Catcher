@@ -1,5 +1,6 @@
 package com.ryuxing.bubblelinecatcher.activity
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -8,14 +9,15 @@ import android.util.Log
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.HorizontalScrollView
-import android.widget.PopupMenu
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
 import com.ryuxing.bubblelinecatcher.data.Chat
@@ -68,6 +70,9 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
     override fun onStart() {
         Log.d("onStarted","started")
         super.onStart()
+        //通知の権限確認
+        permissionGrantredAction()
+
     }
     override fun onDestroy() {
         mainViewModel.liveChat.removeObserver(updateObserver)
@@ -111,5 +116,32 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
         startActivity(intent)
 
     }
+    private fun permissionGrantredAction():Boolean {
+        val sets = NotificationManagerCompat.getEnabledListenerPackages(this)
+        if (sets != null && sets.contains(packageName)) {
+            return true
+        } else {
+            val warn_string ="no permission."
+            val mySnackbar = Snackbar.make(findViewById(R.id.main_coordinate_layout), "no permission.", Snackbar.LENGTH_INDEFINITE)
+            mySnackbar.setBackgroundTint(getColor(R.color.md_theme_dark_error))
+            mySnackbar.setTextColor(getColor(R.color.md_theme_dark_errorContainer))
+            mySnackbar.setAction("権限を付与", View.OnClickListener {
+                    startForResult.launch(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+                    mySnackbar.dismiss()
+
+            })
+            mySnackbar.show()
+            return false
+        }
+    }
+    val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                result: ActivityResult? ->
+            if(permissionGrantredAction()){
+                val mySnackbar = Snackbar.make(findViewById(R.id.main_coordinate_layout), "Permission Granted.", Snackbar.LENGTH_SHORT)
+                mySnackbar.show()
+            }
+        }
+
 
 }

@@ -1,6 +1,7 @@
 package com.ryuxing.bubblelinecatcher.service
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Icon
@@ -32,6 +33,7 @@ class NotificationLoggerService:NotificationListenerService() {
             IS_SERVICE_ENABLED =
             return IS_SERVICE_ENABLED && IS_SERVICE_RUNNING
         }
+        lateinit var context :Context
     }
 
     //サービス開始処理
@@ -43,7 +45,7 @@ class NotificationLoggerService:NotificationListenerService() {
         IS_SERVICE_ENABLED = true
         Log.d("SERVICE_CREATE","Service Started.")
         notificationService.createNotificationChannel(this)
-
+        context = this
     }
     //サービス終了処理
     override fun onDestroy() {

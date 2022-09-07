@@ -9,11 +9,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.Person
+import androidx.core.content.ContextCompat
 import androidx.core.content.LocusIdCompat
 import com.ryuxing.bubblelinecatcher.activity.ChatActivity
 import com.ryuxing.bubblelinecatcher.R
@@ -54,6 +56,14 @@ class NotificationService {
                 personList.remove(msgId)
             }
             notifyMessageList.put(chatId,arrayListOf<Long>())
+
+        }
+        fun removeChat(chatId: String){
+            removeMessages(chatId)
+            val notificationManager: NotificationManager =
+                NotificationLoggerService.context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.cancel(chatId.hashCode())
+
         }
         val channelId_MSG = "MSG"
 
@@ -129,17 +139,19 @@ class NotificationService {
         }catch(e: Exception){
             //代替画像を指定
             Log.w("IMAGE_CATCH_ERROR", e.toString())
-            bitmap = BitmapFactory.decodeResource(context.resources, R.drawable.line_icon_round)
+            bitmap = BitmapFactory.decodeResource(context.resources,
+                R.drawable.ic_launcher_round
+            )
         }
         builder.setLargeIcon(bitmap)
-            .setSmallIcon(R.drawable.line_icon_round)
+            .setSmallIcon(R.drawable.icon_lancher_foreground)
 
         //通知発行
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(chat.chatId.hashCode(), builder.build())
         val summary = NotificationCompat.Builder(context, channelId_MSG)
-            .setSmallIcon(R.drawable.line_icon_round)
+            .setSmallIcon(R.drawable.icon_lancher_foreground)
             .setContentTitle(context.getString(R.string.text_main_activity_new_message))
             .setGroup("messages")
             .setGroupSummary(true)

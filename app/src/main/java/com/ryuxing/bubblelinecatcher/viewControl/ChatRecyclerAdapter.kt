@@ -1,13 +1,18 @@
 package com.ryuxing.bubblelinecatcher.viewControl
 
+import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
+import androidx.core.content.ContextCompat.getDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
@@ -22,6 +27,7 @@ import java.lang.Exception
 class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
     var roomList = ArrayList<String>()
     var chatList = updateFromDatabase().toMutableList()
+    var selectedPosition = -1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         //viewを作る
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_chat,parent,false)
@@ -36,8 +42,11 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
         //本文にSenderを入れるかの分岐
         var message = chat.lastMsg
         if(chat.isGroup){
-            holder.chatName.text = "\uD83D\uDC65 "+ chat.chatName
+            holder.chatName.setCompoundDrawables(getDrawable(App.context,R.drawable.ic_baseline_group_24),null,null,null)
+            //holder.chatName.text = "\uD83D\uDC65 "+ chat.chatName
             message = chat.lastSenderName + ": "+message
+        }else{
+            holder.chatName.setCompoundDrawables(null,null,null,null)
         }
         holder.lastMsg.text = message
 
@@ -65,6 +74,11 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
             intent.data = Uri.parse("bubbledline://catcher.ryuxing.com/chat/${chat.chatId}")
             view.context.startActivity(intent)
         })
+        holder.wrapepr.setOnLongClickListener(View.OnLongClickListener{ view ->
+            setPos(holder.layoutPosition)
+            Log.d("LongPress","index.toString()")
+            return@OnLongClickListener false
+        })
     }
 
     override fun getItemCount() = chatList.size
@@ -83,14 +97,24 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
     }
     fun updateList(chat:Chat){
         val id = chat.chatId
-        val index = roomList.indexOf(id)
+        var index = roomList.indexOf(id)
+        Log.d("index",index.toString())
 
-        if(index==-1){
+        if(chatList.lastIndex < index ){
+            Log.d("index","OUT_OF_RANGE. reload.")
+            reload()
+        }
+        else if(index==-1){
             //追加処理
             chatList.add(0,chat)
             roomList.add(0,id)
             notifyItemInserted(0)
 
+        }
+        else if(chatList[index].chatId!=id){
+            Log.d("index","COMPLEXED. reload." + chatList[index]+" and "+ id)
+
+            reload()
         }
         else if(index==0){
             chatList[0] = chat
@@ -111,6 +135,24 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
         chatList[index].hasUnread = false
         notifyItemChanged(index)
 
+    }
+    fun deleteChat(chatId:String){
+        val index = roomList.indexOf(chatId)
+        if(index==-1) return
+        chatList.removeAt(index)
+        roomList.removeAt(index)
+        notifyItemRemoved(index)
+
+    }
+    fun setPos(pos:Int){
+        this.selectedPosition = pos
+    }
+    fun getPos():Int{
+        return this.selectedPosition
+    }
+    fun getChatId(position: Int): String {
+        if(position<0) return ""
+        return roomList[position]
     }
 
 }

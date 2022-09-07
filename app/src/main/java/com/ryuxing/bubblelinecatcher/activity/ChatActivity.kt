@@ -11,10 +11,13 @@ import android.os.Bundle
 import android.os.Parcel
 import android.os.UserHandle
 import android.util.Log
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
 import android.widget.Button
+import androidx.core.graphics.drawable.IconCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -97,12 +100,10 @@ class ChatActivity : AppCompatActivity() {
         rv.addOnScrollListener(scrollListener())
         val actionBar = supportActionBar
         val room = App.dataManager.cDao.getChat(chatId).first()
-        var roomName = ""
         if (room.isGroup){
-            roomName = "\uD83D\uDC65 "
+            actionBar!!.setIcon(R.drawable.ic_baseline_group_24)
         }
-        roomName += room.chatName
-        actionBar!!.title = roomName
+        actionBar!!.title = room.chatName
 
 
     }
@@ -141,6 +142,7 @@ class ChatActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
     private inner class scrollListener: RecyclerView.OnScrollListener(){
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
             if(newState == RecyclerView.SCROLL_STATE_DRAGGING){

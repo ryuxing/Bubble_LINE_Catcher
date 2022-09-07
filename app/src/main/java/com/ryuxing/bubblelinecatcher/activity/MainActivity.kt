@@ -5,7 +5,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.ContextMenu
+import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
+import android.widget.HorizontalScrollView
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.navigation.ui.AppBarConfiguration
@@ -19,13 +24,14 @@ import com.ryuxing.bubblelinecatcher.livedata.MainViewModel
 import com.ryuxing.bubblelinecatcher.viewControl.ChatRecyclerAdapter
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
     companion object{
         val mainViewModel = MainViewModel()
     }
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var rv: RecyclerView
+    private lateinit var chatAdapter: ChatRecyclerAdapter
     private lateinit var updateObserver:Observer<Chat>
     private lateinit var readObserver:Observer<String>
 
@@ -33,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).apply{setContentView(this.root)}
         //Log.d("Database", App.dataManager.cDao.getAllChats().toString())
-        val chatAdapter = ChatRecyclerAdapter()
+        chatAdapter = ChatRecyclerAdapter()
         val layoutManager = LinearLayoutManager(this)
         rv = findViewById<RecyclerView>(R.id.chat_recycler_view)
         chatAdapter.reload()
@@ -43,8 +49,10 @@ class MainActivity : AppCompatActivity() {
         chatAdapter.notifyDataSetChanged()
         //ViewModel追加
         updateObserver = Observer<Chat>{
+            val pos = layoutManager.findFirstVisibleItemPosition()
             chatAdapter.updateList(it)
             Log.d("OBSERVE UPDATE",it.toString())
+            if (pos==0) rv.smoothScrollToPosition(0)
         }
         readObserver =Observer<String>{
             chatAdapter.updateRead(it)
@@ -53,6 +61,8 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.liveChat.observeForever(updateObserver)
         mainViewModel.read.observeForever(readObserver)
         Log.d("onCreated","created")
+        //menu登録
+        registerForContextMenu(rv)
     }
 
     override fun onStart() {
@@ -66,6 +76,32 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        Log.d("onCreateContextMenu","destroyed")
+
+        menuInflater.inflate(R.menu.menu_chat_item,menu)
+        super.onCreateContextMenu(menu, v, menuInfo)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        Log.d("onCreateItemSelected","destroyed")
+        val menuId = item.itemId
+        val position = chatAdapter.getPos()
+        val chatId = chatAdapter.getChatId(position)
+        when(menuId) {
+            R.id.menu_chat_item_read -> App.dataManager.read(chatId)
+            R.id.menu_chat_item_delete -> {
+                App.dataManager.removeChat(chatId)
+                chatAdapter.deleteChat(chatId)
+            }
+            else ->return super.onContextItemSelected(item)
+        }
+        return true
+    }
     fun openFiler(view: View){
         val intent = Intent(Intent.ACTION_VIEW)
         //intent.setClassName("com.google.android.documentsui","com.android.documentsui.files.FilesActivity")

@@ -34,6 +34,7 @@ class Manager(db: Database) {
     fun removeChat(chatId:String){
         cDao.deleteChat(chatId)
         mDao.deleteChatMessages(chatId)
+        NotificationService.removeChat(chatId)
     }
     //既読時の通知
     fun read(chatId:String){

@@ -66,15 +66,13 @@ class NotificationLoggerService:NotificationListenerService() {
         if(sbn == null) return
         //通知がLINEかつカテゴリーがmsgの時に処理を継続する
         lateinit var msg:ChatMessage
+        lateinit var chat:Chat
+
         val notify = sbn.notification.extras
         var path = ""
         lateinit var icon :Icon
 
         if(sbn.packageName == "com.kiwibrowser.browser"){
-            for (str in sbn.notification.extras.keySet()){
-                Log.d("SERVICE_EXTRA_LINE_KEYSET",str)
-                Log.d("SERVICE_EXTRA_LINE_DETAIL",sbn.notification.extras.get(str).toString())
-            }
             Log.d("sbn.notification",sbn.notification.toString())
             val notify = sbn.notification.extras
             val mesId = Date().time.milliseconds.toLong(DurationUnit.MICROSECONDS)*100+(Math.random()*100).toLong()
@@ -99,6 +97,17 @@ class NotificationLoggerService:NotificationListenerService() {
                 false, //テキストorスタンプ
                 notify.getString("android.title", getString(R.string.text_unknown_member)), //送信者
                 sbn.notification.`when`//メッセージ受信時刻
+            )
+            //チャットルーム情報を格納
+            chat = Chat(
+                msg.chatId, //Chat ID
+                notify.getString("android.title", msg.sender), //Chat Name
+                false,//notify.getString("android.subText", "") != "", //グループかどうか
+                notify.getString("android.text", getString(R.string.text_main_activity_new_message)),
+                msg.sender,
+                path,
+                msg.date,
+                true
             )
 
 
@@ -151,6 +160,19 @@ class NotificationLoggerService:NotificationListenerService() {
             )
             //ルームID不明はここで切る
             if (msg.chatId == "0") return
+
+            //チャットルーム情報を格納
+            chat = Chat(
+                msg.chatId, //Chat ID
+                notify.getString("android.subText", msg.sender), //Chat Name
+                notify.getString("android.subText", "") != "", //グループかどうか
+                notify.getString("android.text", getString(R.string.text_main_activity_new_message)),
+                msg.sender,
+                path,
+                msg.date,
+                true
+            )
+
         }else return
         //チャットのメッセージが通知からキャンセルされているか見る
         var notifs = super.getActiveNotifications()
@@ -165,17 +187,6 @@ class NotificationLoggerService:NotificationListenerService() {
             NotificationService.removeMessages(msg.chatId)
         }
 
-        //チャットルーム情報を格納
-        val chat = Chat(
-            msg.chatId, //Chat ID
-            notify.getString("android.subText", msg.sender), //Chat Name
-            notify.getString("android.subText", "") != "", //グループかどうか
-            notify.getString("android.text", getString(R.string.text_main_activity_new_message)),
-            msg.sender,
-            path,
-            msg.date,
-            true
-        )
         Log.d("Chat",chat.toString())
         Log.d("Message",msg.toString())
         //オブジェクトを通知用メッセージリストに格納

@@ -6,9 +6,15 @@
         <entry key="..\:/Users/shiry/AndroidStudioProjects/Bubble_LINE_Catcher/app/src/main/res/layout/activity_chat.xml" value="0.1" />
         <entry key="..\:/Users/shiry/AndroidStudioProjects/Bubble_LINE_Catcher/app/src/main/res/xml/root_preferences.xml" value="0.25" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1315" />
+        <entry key="app/src/main/res/drawable/ic_baseline_brightness_1_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_baseline_group_24.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable/ic_baseline_visibility_off_24.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1125" />
+        <entry key="app/src/main/res/drawable/icon_lancher_foreground.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/message_incoming.xml" value="0.1225" />
         <entry key="app/src/main/res/drawable/message_outgoing.xml" value="0.1315" />
-        <entry key="app/src/main/res/drawable/open_in_new_24.xml" value="0.1315" />
+        <entry key="app/src/main/res/drawable/open_in_new_24.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.3179791976225854" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17022636086240456" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.2515625" />

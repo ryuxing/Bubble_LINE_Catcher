@@ -2,24 +2,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ryuxing.bubblelinecatcher">
 
+    <queries>
+        <package android:name="jp.naver.line.android" />
+    </queries>
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
-        android:allowBackup="true"
         android:name=".App"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BubbleLINECatcher">
         <activity
             android:name=".activity.ChatActivity"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@style/Theme.BubbleLINECatcher">
             <intent-filter>
-                <data android:scheme="bubbledline"
+                <data
                     android:host="catcher.ryuxing.com"
-                    android:pathPattern="/chat/*"/>
+                    android:pathPattern="/chat/*"
+                    android:scheme="bubbledline" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.MainActivity"
             android:exported="true"
@@ -31,14 +38,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".service.NotificationLoggerService"
+        <service
+            android:name=".service.NotificationLoggerService"
+            android:exported="true"
             android:label="@string/app_name"
-            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
-            android:exported="true">
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
-                <action android:name="android.service.notification.NotificationListenerService"/>
+                <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="20dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/message_outgoing"
+        android:background="@drawable/message_incoming"
         android:backgroundTint="@color/chat_sender"
         android:paddingLeft="15dp"
         android:paddingTop="10dp"

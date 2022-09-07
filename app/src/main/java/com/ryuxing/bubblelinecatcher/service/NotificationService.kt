@@ -109,6 +109,7 @@ class NotificationService {
             .addPerson(contact)
             .setShowWhen(true)
             .setStyle(messaging)
+            .setColor(ContextCompat.getColor(context, R.color.ic_launcher_background))
             .setGroup("messages")
             .setContentIntent(pendingIntent)
             .setBubbleMetadata(

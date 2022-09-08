@@ -18,6 +18,9 @@ import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
 import com.ryuxing.bubblelinecatcher.activity.ChatActivity
 import com.ryuxing.bubblelinecatcher.data.Chat
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
@@ -28,6 +31,8 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
     var roomList = ArrayList<String>()
     var chatList = updateFromDatabase().toMutableList()
     var selectedPosition = -1
+    private val mutex = Mutex()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         //viewを作る
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_chat,parent,false)
@@ -97,52 +102,71 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
     }
     fun updateList(chat:Chat){
         val id = chat.chatId
-        var index = roomList.indexOf(id)
-        Log.d("index",index.toString())
+        runBlocking {
+            mutex.withLock {
+                var index = roomList.indexOf(id)
+                Log.d("index",index.toString())
 
-        if(chatList.lastIndex < index ){
-            Log.d("index","OUT_OF_RANGE. reload.")
-            reload()
-        }
-        else if(index==-1){
-            //追加処理
-            chatList.add(0,chat)
-            roomList.add(0,id)
-            notifyItemInserted(0)
+                if(chatList.lastIndex < index ){
+                    Log.d("index","OUT_OF_RANGE. reload.")
+                    reload()
+                }
+                else if(index==-1){
+                    //追加処理
+                    chatList.add(0,chat)
+                    roomList.add(0,id)
+                    notifyItemInserted(0)
 
-        }
-        else if(chatList[index].chatId!=id){
-            Log.d("index","COMPLEXED. reload." + chatList[index]+" and "+ id)
-
-            reload()
-        }
-        else if(index==0){
-            chatList[0] = chat
-            notifyItemChanged(0)
-        }
-        else{
-            chatList.removeAt(index)
-            roomList.removeAt(index)
-            chatList.add(0,chat)
-            roomList.add(0,id)
-            notifyItemMoved(index,0)
-            notifyItemChanged(0,{})
+                }
+                else if(chatList[index].chatId!=id){
+                    Log.d("index","COMPLEXED. reload." + chatList[index]+" and "+ id)
+                    reload()
+                }
+                else if(index==0){
+                    chatList[0] = chat
+                    notifyItemChanged(0)
+                }
+                else{
+                    chatList.removeAt(index)
+                    roomList.removeAt(index)
+                    chatList.add(0,chat)
+                    roomList.add(0,id)
+                    notifyItemMoved(index,0)
+                    notifyItemChanged(0,{})
+                }
+            }
         }
     }
     fun updateRead(id:String){
-        val index = roomList.indexOf(id)
-        if(index==-1) return
-        else if(index > itemCount-1) return
-        chatList[index].hasUnread = false
-        notifyItemChanged(index)
-
+        runBlocking {
+            mutex.withLock {
+                val index = roomList.indexOf(id)
+                when{
+                    index == -1 ->{
+                        Log.d("ChatAdapter Read Action" , "No match roomId")
+                    }
+                    index > itemCount-1 ->{
+                        Log.d("ChatAdapter Read Action" , "Index Out of Range")
+                    }
+                    else ->{
+                        chatList[index].hasUnread = false
+                        notifyItemChanged(index)
+                    }
+                }
+            }
+        }
     }
     fun deleteChat(chatId:String){
-        val index = roomList.indexOf(chatId)
-        if(index==-1) return
-        chatList.removeAt(index)
-        roomList.removeAt(index)
-        notifyItemRemoved(index)
+        runBlocking {
+            mutex.withLock {
+                val index = roomList.indexOf(chatId)
+                if(index!=-1) {
+                    chatList.removeAt(index)
+                    roomList.removeAt(index)
+                    notifyItemRemoved(index)
+                }
+            }
+        }
 
     }
     fun setPos(pos:Int){

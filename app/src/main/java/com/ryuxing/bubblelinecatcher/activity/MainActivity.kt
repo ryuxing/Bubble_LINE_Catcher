@@ -24,6 +24,9 @@ import com.ryuxing.bubblelinecatcher.data.Chat
 import com.ryuxing.bubblelinecatcher.databinding.ActivityMainBinding
 import com.ryuxing.bubblelinecatcher.livedata.MainViewModel
 import com.ryuxing.bubblelinecatcher.viewControl.ChatRecyclerAdapter
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 
 
 class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
@@ -51,14 +54,13 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
         chatAdapter.notifyDataSetChanged()
         //ViewModel追加
         updateObserver = Observer<Chat>{
-            val pos = layoutManager.findFirstVisibleItemPosition()
-            chatAdapter.updateList(it)
-            Log.d("OBSERVE UPDATE",it.toString())
-            if (pos==0) rv.smoothScrollToPosition(0)
+                    val pos = layoutManager.findFirstVisibleItemPosition()
+                    chatAdapter.updateList(it)
+                    Log.d("OBSERVE UPDATE", it.toString())
+                    if (pos == 0) rv.smoothScrollToPosition(0)
         }
         readObserver =Observer<String>{
-            chatAdapter.updateRead(it)
-
+                    chatAdapter.updateRead(it)
         }
         mainViewModel.liveChat.observeForever(updateObserver)
         mainViewModel.read.observeForever(readObserver)

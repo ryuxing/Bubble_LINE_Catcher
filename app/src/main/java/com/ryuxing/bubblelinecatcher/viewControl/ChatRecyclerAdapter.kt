@@ -47,11 +47,11 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
         //本文にSenderを入れるかの分岐
         var message = chat.lastMsg
         if(chat.isGroup){
-            holder.chatName.setCompoundDrawables(getDrawable(App.context,R.drawable.ic_baseline_group_24),null,null,null)
+            //holder.chatName.setCompoundDrawables(getDrawable(App.context,R.drawable.ic_baseline_group_24),null,null,null)
             //holder.chatName.text = "\uD83D\uDC65 "+ chat.chatName
             message = chat.lastSenderName + ": "+message
         }else{
-            holder.chatName.setCompoundDrawables(null,null,null,null)
+            //holder.chatName.setCompoundDrawables(null,null,null,null)
         }
         holder.lastMsg.text = message
 
@@ -72,7 +72,9 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
             Log.w("Image_Load_ERROR__ChatRecyclerAdapter", e.stackTraceToString())
 
         }
-
+        if(chat.chatId.startsWith("🥝")){
+            holder.chatName.text = "🥝"+holder.chatName.text
+        }
         //Listenerをここで作る
         holder.wrapepr.setOnClickListener(View.OnClickListener { view ->
             val intent = Intent(view.context,ChatActivity::class.java)

@@ -89,7 +89,7 @@ class ChatActivity : AppCompatActivity() {
         val actionBar = supportActionBar
         val room = App.dataManager.cDao.getChat(chatId).first()
         if (room.isGroup){
-            actionBar!!.setIcon(R.drawable.ic_baseline_group_24)
+            //actionBar!!.setIcon(R.drawable.ic_baseline_group_24)
         }
         actionBar!!.title = room.chatName
 
@@ -115,6 +115,11 @@ class ChatActivity : AppCompatActivity() {
                 menu?.removeItem(R.id.item_open_with_bubble)
             }
         }
+        if(chatId.startsWith("🥝")){
+            menu?.removeItem(R.id.item_open_with_LINE)
+
+        }
+
         return super.onCreateOptionsMenu(menu)
     }
 

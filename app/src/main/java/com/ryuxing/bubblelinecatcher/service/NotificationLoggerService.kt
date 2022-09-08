@@ -43,7 +43,7 @@ class NotificationLoggerService:NotificationListenerService() {
         //todo:
         // 記録スイッチの最後の状態を取得する
         IS_SERVICE_ENABLED = true
-        Log.d("SERVICE_CREATE","Service Started.")
+        Log.i("SERVICE_CREATE","Service Started.")
         notificationService.createNotificationChannel(this)
         context = this
     }
@@ -51,7 +51,7 @@ class NotificationLoggerService:NotificationListenerService() {
     override fun onDestroy() {
         super.onDestroy()
         IS_SERVICE_RUNNING = false
-        Log.d("SERVICE_DESTROY","Service Destroyed")
+        Log.i("SERVICE_DESTROY","Service Destroyed")
     }
 
     @SuppressLint("RestrictedApi")
@@ -64,7 +64,6 @@ class NotificationLoggerService:NotificationListenerService() {
         if(sbn.packageName == "jp.naver.line.android"
             && sbn.notification.category == "msg") {
 
-            Log.d("LINE_INTENT",sbn.notification.contentIntent.describeContents().toString())
             /*for (str in sbn.notification.extras.keySet()){
                 Log.d("SERVICE_EXTRA_LINE_KEYSET",str)
                 Log.d("SERVICE_EXTRA_LINE_DETAIL",sbn.notification.extras.get(str).toString())
@@ -85,7 +84,7 @@ class NotificationLoggerService:NotificationListenerService() {
                 file.writeBytes(baos.toByteArray())
                 path = file.path
             }catch (e:Exception){
-                Log.w("ERROR While ICON SAVE",e.toString())
+                Log.w("ERROR While ICON SAVE__NotificationLoggerService",e.stackTraceToString())
             }
 
             //スタンプだった場合は本文ににURLを入れる

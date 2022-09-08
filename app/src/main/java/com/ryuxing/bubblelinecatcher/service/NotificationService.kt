@@ -143,7 +143,7 @@ class NotificationService {
             bitmap = ImageDecoder.decodeBitmap(source)
         }catch(e: Exception){
             //代替画像を指定
-            Log.w("IMAGE_CATCH_ERROR", e.toString())
+            Log.w("IMAGE_CATCH_ERROR__NotificationService", e.stackTraceToString())
             bitmap = BitmapFactory.decodeResource(context.resources,
                 R.drawable.ic_launcher_round
             )

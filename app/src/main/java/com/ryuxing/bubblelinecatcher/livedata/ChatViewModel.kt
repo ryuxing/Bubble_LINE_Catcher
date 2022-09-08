@@ -22,7 +22,6 @@ class ChatViewModel: ViewModel() {
             if(chatViewModelList.containsKey(message.chatId)){
                 chatViewModelList[message.chatId]!!.addMessage(message)
             }
-            Log.d("CVM_addMessageToChatView",message.toString())
         }
     }
     val messages = MutableLiveData<HashMap<Long,ChatMessage>>()
@@ -33,10 +32,8 @@ class ChatViewModel: ViewModel() {
         msgList[message.msgId] = message
         messages.value = msgList
         receiveCount = 0
-        Log.d("CVM_addMessage", message.chatId + " , "+message.msgId)
     }
-    fun receiveMessage(hash:Int){
-        Log.d("RECEIVE_FROM","Receive from ${hash}.  obs = ${observerCount} ,rcv = ${receiveCount}")
+    fun receiveMessage(){
         if(observerCount <= receiveCount){
             messages.value = HashMap<Long,ChatMessage>()
         }

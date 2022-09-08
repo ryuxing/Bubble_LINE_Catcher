@@ -41,7 +41,6 @@ class Sticker {
                             "<img src='$url'>Stamp</img>" +
                     "</body></html>"
             view.loadData(html, "text/html", "utf-8");
-            //view.loadUrl(url)
 
 
         }

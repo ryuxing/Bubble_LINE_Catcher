@@ -41,7 +41,7 @@ class Manager(db: Database) {
         NotificationService.removeMessages(chatId)
         cDao.readChat(chatId)
         MainActivity.mainViewModel.updateRead(chatId)
-        Log.d("BLC_READED",chatId)
+        Log.d("BLC_READED__Manager",chatId)
     }
 
 }

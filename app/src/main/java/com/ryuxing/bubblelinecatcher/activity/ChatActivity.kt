@@ -27,7 +27,6 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var rv:RecyclerView
     private var chatId =""
     private var unread = 0
-    val hash = this.hashCode()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //IntentからChatId取得
@@ -36,31 +35,25 @@ class ChatActivity : AppCompatActivity() {
         if(chatIdFromURI==""&& chatIdFromIntent==null) finish()
         else if(chatIdFromURI=="") chatId = chatIdFromIntent.toString()
         else chatId = chatIdFromURI
-        Log.d("Chat_Id", chatId)
+        Log.d("Chat_Id__ChatActivity", chatId)
         //チャットID取得完了
 
         binding = ActivityChatBinding.inflate(layoutInflater).apply { setContentView(this.root) }
-        val messageList : List<ChatMessage> = App.dataManager.mDao.getMessages(chatId)
         val messageAdapter = MessageRecyclerAdapter(chatId)
         val layoutManager = LinearLayoutManager(this)
         rv = findViewById<RecyclerView>(R.id.message_recycler_view)
         rv.setHasFixedSize(true)
         rv.layoutManager = layoutManager
         rv.adapter = messageAdapter
-        //Log.d("Message",App.dataManager.mDao.getMessages(chatId).toString())
         findViewById<Button>(R.id.message_goto_latest_button).setOnClickListener(View.OnClickListener {view ->
             val scrollView = findViewById<RecyclerView>(R.id.message_recycler_view)!!
 
             scrollView.smoothScrollToPosition((scrollView.adapter!!.itemCount) -1)
             findViewById<Button>(R.id.message_goto_latest_button).text = "▼"
 
-            Log.d("COUNT",messageAdapter.itemCount.toString())
-
         })
-        Log.d("COUNT",messageAdapter.itemCount.toString())
         //LiveDataを定義
         val viewModel = ChatViewModel.getChatViewModel(chatId)
-        Log.d("Activity_HASH", "Activity ${hash} is ${this.isLaunchedFromBubble}")
         viewModel.register()
         val observer = Observer<HashMap<Long,ChatMessage>>{
             if(it.isEmpty()){
@@ -69,9 +62,8 @@ class ChatActivity : AppCompatActivity() {
                 val prevPos = layoutManager.findLastVisibleItemPosition()
                 val prevItem= messageAdapter.itemCount-1
                 val count = messageAdapter.updateMessages(it)
-                viewModel.receiveMessage(hash)
+                viewModel.receiveMessage()
                 App.dataManager.read(chatId)
-                Log.d("Scroll","prevPos="+prevPos+", prevItem=prevItem")
                 //スクロールするかどうか
                 if(prevPos==prevItem){
                     val scrollView = findViewById<RecyclerView>(R.id.message_recycler_view)!!
@@ -119,9 +111,7 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu1?): Boolean {
         menuInflater.inflate(R.menu.menu_chat,menu)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            Log.d("menu version","hoge")
             if(this.isLaunchedFromBubble){
-                Log.d("menu removed","hoge")
                 menu?.removeItem(R.id.item_open_with_bubble)
             }
         }
@@ -158,7 +148,7 @@ class ChatActivity : AppCompatActivity() {
                         withStockUsing = false
                     )
                 }catch(e: Exception){
-                    Log.w("Bubble_Error",e.stackTraceToString())
+                    Log.w("Bubble_Open_FAILURE__ChatActivity",e.stackTraceToString())
                 }
 
                 return true

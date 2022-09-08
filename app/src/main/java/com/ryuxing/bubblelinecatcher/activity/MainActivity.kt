@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater).apply{setContentView(this.root)}
-        //Log.d("Database", App.dataManager.cDao.getAllChats().toString())
         chatAdapter = ChatRecyclerAdapter()
         val layoutManager = LinearLayoutManager(this)
         rv = findViewById<RecyclerView>(R.id.chat_recycler_view)
@@ -56,7 +55,6 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
         updateObserver = Observer<Chat>{
                     val pos = layoutManager.findFirstVisibleItemPosition()
                     chatAdapter.updateList(it)
-                    Log.d("OBSERVE UPDATE", it.toString())
                     if (pos == 0) rv.smoothScrollToPosition(0)
         }
         readObserver =Observer<String>{
@@ -64,13 +62,12 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
         }
         mainViewModel.liveChat.observeForever(updateObserver)
         mainViewModel.read.observeForever(readObserver)
-        Log.d("onCreated","created")
         //menu登録
         registerForContextMenu(rv)
+        Log.d("onCreated__MainActivity","created.")
     }
 
     override fun onStart() {
-        Log.d("onStarted","started")
         super.onStart()
         //通知の権限確認
         permissionGrantredAction()
@@ -79,7 +76,6 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
     override fun onDestroy() {
         mainViewModel.liveChat.removeObserver(updateObserver)
         mainViewModel.read.removeObserver(readObserver)
-        Log.d("onDestroy","destroyed")
         super.onDestroy()
     }
 
@@ -88,14 +84,12 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
         v: View?,
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
-        Log.d("onCreateContextMenu","destroyed")
 
         menuInflater.inflate(R.menu.menu_chat_item,menu)
         super.onCreateContextMenu(menu, v, menuInfo)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        Log.d("onCreateItemSelected","destroyed")
         val menuId = item.itemId
         val position = chatAdapter.getPos()
         val chatId = chatAdapter.getChatId(position)
@@ -123,6 +117,7 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
         if (sets != null && sets.contains(packageName)) {
             return true
         } else {
+            //ToDo String対応とマテリアル対応
             val warn_string ="no permission."
             val mySnackbar = Snackbar.make(findViewById(R.id.main_coordinate_layout), "no permission.", Snackbar.LENGTH_INDEFINITE)
             mySnackbar.setBackgroundTint(getColor(R.color.md_theme_dark_error))

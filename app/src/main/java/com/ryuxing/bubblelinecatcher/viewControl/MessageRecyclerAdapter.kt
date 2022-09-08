@@ -11,25 +11,41 @@ import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
 import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
+import com.ryuxing.bubblelinecatcher.data.Chat
 import com.ryuxing.bubblelinecatcher.data.ChatMessage
 import com.ryuxing.bubblelinecatcher.data.MyDate
 import com.ryuxing.bubblelinecatcher.data.Sticker
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.io.BufferedInputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
 import java.lang.Exception
 
-class MessageRecyclerAdapter(val list: List<ChatMessage>) : RecyclerView.Adapter<MessageViewHolder>() {
+class MessageRecyclerAdapter(chatId:String) : RecyclerView.Adapter<MessageViewHolder>() {
+    var messageList : MutableList<ChatMessage>
+    var mesIdList : ArrayList<Long>
+    val mutex = Mutex()
+    val hash = this.hashCode()
+    val chatId :String
+
+    init{
+        this.chatId = chatId
+        messageList = App.dataManager.mDao.getMessages(chatId).toMutableList()
+        mesIdList = ArrayList<Long>()
+        for(mes in messageList){
+            mesIdList.add(mes.msgId)
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_message,parent,false)
         return MessageViewHolder(view)
     }
-    val messageList = list.toMutableList()
-    val mesIdList = ArrayList<Long>()
     override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
         var message = messageList[position]
-        mesIdList.add(message.msgId)
         holder.messageDate.text = MyDate.toTextDate(message.date)
         //送信者によって条件を分岐
         if(message.sender == "me"){
@@ -53,7 +69,7 @@ class MessageRecyclerAdapter(val list: List<ChatMessage>) : RecyclerView.Adapter
                 stream.close()
             }catch (e : Exception){
                 holder.messageIcon.setImageResource(R.drawable.person_icon)
-                Log.w("MESSAGE_ICON_LOAD_FAILURE",e.stackTraceToString())
+                Log.w("Message_Icon_Load_FAILURE__MessageRecyclerAdapter",e.stackTraceToString())
             }
         }
         //TextかStickerか
@@ -88,24 +104,31 @@ class MessageRecyclerAdapter(val list: List<ChatMessage>) : RecyclerView.Adapter
     override fun getItemCount() = messageList.size
 
     fun updateMessages(map: HashMap<Long,ChatMessage>):Int{
-        var changeIndex = ArrayList<Int>()
         var addCount = 0
-        val lastIndex = itemCount
-        map.forEach { (mesId, message) ->
-            val index = mesIdList.indexOf(mesId)
-            if (index == -1 || index > itemCount-1) {
-                mesIdList.add(mesId)
-                messageList.add(message)
-                addCount++
-            } else {
-                messageList[index] = message
-                changeIndex.add(index)
-            }
+        var lastIndex = 0
+        var changeIndex = ArrayList<Int>()
 
-            for (index in changeIndex) {
-                notifyItemChanged(index)
+        runBlocking {
+            mutex.withLock {
+                    addCount = 0
+                lastIndex = itemCount
+                map.forEach { (mesId, message) ->
+                    val index = mesIdList.indexOf(mesId)
+                    if (index == -1 || index > itemCount-1) {
+                        mesIdList.add(mesId)
+                        messageList.add(message)
+                        addCount++
+                    } else {
+                        messageList[index] = message
+                        changeIndex.add(index)
+                    }
+                }
             }
         }
+        for (index in changeIndex) {
+            notifyItemChanged(index)
+        }
+
         notifyItemRangeInserted(lastIndex,addCount)
         return addCount
     }

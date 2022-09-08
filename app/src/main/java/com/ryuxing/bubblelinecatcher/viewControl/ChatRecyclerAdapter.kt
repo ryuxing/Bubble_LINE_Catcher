@@ -69,6 +69,7 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
             stream.close()
         }catch (e :Exception){
             holder.chatIcon.setImageResource(R.drawable.person_icon)
+            Log.w("Image_Load_ERROR__ChatRecyclerAdapter", e.stackTraceToString())
 
         }
 
@@ -92,13 +93,13 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
         for(chat in list){
             roomList.add(chat.chatId)
         }
-        Log.d("ChatRecycler_UPDATED",list.size.toString())
+        Log.d("ChatRecycler_UPDATED__ChatRecyclerAdapter",list.size.toString())
         return list.toMutableList()
     }
     fun reload(){
         chatList = updateFromDatabase()
         notifyDataSetChanged()
-        Log.d("ChatRecycler_RELOAD","reloaded.")
+        Log.d("ChatRecycler_RELOAD__ChatRecyclerAdapter","reloaded. size=${chatList.size}")
     }
     fun updateList(chat:Chat){
         val id = chat.chatId
@@ -108,7 +109,7 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
                 Log.d("index",index.toString())
 
                 if(chatList.lastIndex < index ){
-                    Log.d("index","OUT_OF_RANGE. reload.")
+                    Log.i("Index_OutOfRange_Updating__ChatRecyclerAdapter","OUT_OF_RANGE. reload.\nindex = ${index}, size = ${roomList.size}, chatId=${id}")
                     reload()
                 }
                 else if(index==-1){
@@ -119,7 +120,9 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
 
                 }
                 else if(chatList[index].chatId!=id){
-                    Log.d("index","COMPLEXED. reload." + chatList[index]+" and "+ id)
+                    Log.d("Index_UnexpectedValue_Updating__ChatRecyclerAdapter","No Match Item Between chatList & roomList. reload\n" +
+                            "index=${chatList[index]}, searchId = ${id}, chatList[${index}] = ${chatList[index]}, roomList[${index}] = ${roomList[index]}\n" +
+                            "Size: chatList = ${chatList.size}, roomList =${roomList.size}")
                     reload()
                 }
                 else if(index==0){
@@ -143,10 +146,10 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
                 val index = roomList.indexOf(id)
                 when{
                     index == -1 ->{
-                        Log.d("ChatAdapter Read Action" , "No match roomId")
+                        Log.w("Read Action__ChatRecyclerAdapter" , "No match roomId. roomId=${id}")
                     }
-                    index > itemCount-1 ->{
-                        Log.d("ChatAdapter Read Action" , "Index Out of Range")
+                    index > roomList.size -1 ->{
+                        Log.w("ead Action__ChatRecyclerAdapter" , "Index Out of Range. roomId=${id}, index=${index}, size=${roomList.size}")
                     }
                     else ->{
                         chatList[index].hasUnread = false

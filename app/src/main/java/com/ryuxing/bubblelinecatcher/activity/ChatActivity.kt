@@ -89,7 +89,7 @@ class ChatActivity : AppCompatActivity() {
         val actionBar = supportActionBar
         val room = App.dataManager.cDao.getChat(chatId).first()
         if (room.isGroup){
-            actionBar!!.setIcon(R.drawable.ic_baseline_group_24)
+            //actionBar!!.setIcon(R.drawable.ic_baseline_group_24)
         }
         actionBar!!.title = room.chatName
 

@@ -47,11 +47,11 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
         //本文にSenderを入れるかの分岐
         var message = chat.lastMsg
         if(chat.isGroup){
-            holder.chatName.setCompoundDrawables(getDrawable(App.context,R.drawable.ic_baseline_group_24),null,null,null)
+            //holder.chatName.setCompoundDrawables(getDrawable(App.context,R.drawable.ic_baseline_group_24),null,null,null)
             //holder.chatName.text = "\uD83D\uDC65 "+ chat.chatName
             message = chat.lastSenderName + ": "+message
         }else{
-            holder.chatName.setCompoundDrawables(null,null,null,null)
+            //holder.chatName.setCompoundDrawables(null,null,null,null)
         }
         holder.lastMsg.text = message
 

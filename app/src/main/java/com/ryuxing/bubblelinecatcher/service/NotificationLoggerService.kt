@@ -74,7 +74,6 @@ class NotificationLoggerService:NotificationListenerService() {
 
         if(sbn.packageName == "com.kiwibrowser.browser"){
             Log.d("sbn.notification",sbn.notification.toString())
-            val notify = sbn.notification.extras
             val mesId = Date().time.milliseconds.toLong(DurationUnit.MICROSECONDS)*100+(Math.random()*100).toLong()
             icon = notify.get("android.largeIcon") as Icon
             //Iconをキャッシュファイルに書き込み
@@ -92,7 +91,7 @@ class NotificationLoggerService:NotificationListenerService() {
             val content = notify.getString("android.text", getString(R.string.text_notification_new_message)) //メッセージ
             msg = ChatMessage(
                 mesId, //メッセージid
-                notify.getString("android.title", getString(R.string.text_unknown_member)), //chat id
+                "🥝"+notify.getString("android.title", getString(R.string.text_unknown_member)), //chat id
                 content,  //本文
                 false, //テキストorスタンプ
                 notify.getString("android.title", getString(R.string.text_unknown_member)), //送信者
@@ -121,9 +120,8 @@ class NotificationLoggerService:NotificationListenerService() {
             }*/
             //メッセージの取得
             //まずは通知の中身を格納する
-            val notify = sbn.notification.extras
             val mesId = notify.getString("line.message.id", "0").toLong()
-            var icon = notify.get("android.largeIcon") as Icon
+            icon = notify.get("android.largeIcon") as Icon
             //Iconをキャッシュファイルに書き込み
             try {
                 var image = icon.loadDrawable(this)!!.toBitmap()
@@ -150,7 +148,7 @@ class NotificationLoggerService:NotificationListenerService() {
                 ) //メッセージ
             }
             //通知メッセージをChatMessageに格納
-            var msg = ChatMessage(
+            msg = ChatMessage(
                 mesId, //メッセージid
                 notify.getString("line.chat.id", "0"), //chat id
                 content,  //本文

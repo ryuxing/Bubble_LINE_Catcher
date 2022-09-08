@@ -115,6 +115,11 @@ class ChatActivity : AppCompatActivity() {
                 menu?.removeItem(R.id.item_open_with_bubble)
             }
         }
+        if(chatId.startsWith("🥝")){
+            menu?.removeItem(R.id.item_open_with_LINE)
+
+        }
+
         return super.onCreateOptionsMenu(menu)
     }
 

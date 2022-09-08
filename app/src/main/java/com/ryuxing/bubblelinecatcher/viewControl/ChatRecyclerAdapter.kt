@@ -72,7 +72,9 @@ class ChatRecyclerAdapter() : RecyclerView.Adapter<ChatViewHolder>() {
             Log.w("Image_Load_ERROR__ChatRecyclerAdapter", e.stackTraceToString())
 
         }
-
+        if(chat.chatId.startsWith("🥝")){
+            holder.chatName.text = "🥝"+holder.chatName.text
+        }
         //Listenerをここで作る
         holder.wrapepr.setOnClickListener(View.OnClickListener { view ->
             val intent = Intent(view.context,ChatActivity::class.java)

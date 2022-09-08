@@ -44,7 +44,7 @@ data class Chat(
     fun getTimeString():String{
         return MyDate.toTextDate(lastDate)
     }
-    fun createPerson(chatId : Long): Person {
+    fun createPerson(): Person {
         val stream: InputStream = FileInputStream(File(lastSenderIcon))
         val icon = BitmapFactory.decodeStream(BufferedInputStream(stream))
         var person =Person.Builder()

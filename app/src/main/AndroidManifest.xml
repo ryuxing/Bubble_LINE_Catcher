@@ -17,8 +17,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BubbleLINECatcher">
         <activity
+            android:name=".InitialActivity"
+            android:exported="false"
+            android:label="@string/title_activity_initial"
+            android:theme="@style/Theme.BubbleLINECatcher" />
+        <activity
             android:name=".activity.ChatActivity"
             android:exported="false"
+            android:resizeableActivity="true"
+            android:documentLaunchMode="always"
             android:theme="@style/Theme.BubbleLINECatcher">
             <intent-filter>
                 <data

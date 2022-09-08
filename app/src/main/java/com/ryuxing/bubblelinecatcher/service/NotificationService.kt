@@ -88,16 +88,21 @@ class NotificationService {
         isUpdate: Boolean,
         context: Context,
         suppressNotification:Boolean = false,
-        autoExpandBubble:Boolean =false
+        autoExpandBubble:Boolean =false,
+        withStockUsing:Boolean =true
     ) {
         var messaging = NotificationCompat.MessagingStyle(contact)
             .setConversationTitle(chat.chatName)
             .setGroupConversation(chat.isGroup)
-        var chatMsgList = notifyMessageList.getValue(chat.chatId)
-        for (msgId in chatMsgList) {
-            var msg = msgList.getValue(msgId)
-            var senderPerson= personList.getValue(msgId)
-            messaging.addMessage(msg.message, msg.date, senderPerson)
+        if(withStockUsing){
+            var chatMsgList = notifyMessageList.getValue(chat.chatId)
+            for (msgId in chatMsgList) {
+                var msg = msgList.getValue(msgId)
+                var senderPerson= personList.getValue(msgId)
+                messaging.addMessage(msg.message, msg.date, senderPerson)
+            }
+        }else{
+            messaging.addMessage(msg.message,msg.date,chat.createPerson())
         }
         val pendingIntent = PendingIntent
             .getActivity(

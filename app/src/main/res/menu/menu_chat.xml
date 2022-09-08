@@ -2,6 +2,11 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/item_open_with_bubble"
+        android:icon="@drawable/ic_baseline_picture_in_picture_alt_24"
+        android:title="item_open_with_bubble"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/item_open_with_LINE"
         android:icon="@drawable/open_in_new_24"
         android:title="@string/title_item_open_with_app"

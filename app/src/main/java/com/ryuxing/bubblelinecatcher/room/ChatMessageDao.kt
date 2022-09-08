@@ -16,6 +16,10 @@ interface ChatMessageDao {
     @Query("SELECT * FROM messages WHERE msgId=:msgId")
     fun getMessage(msgId :Long):List<ChatMessage>
 
+    //Get Last Chat
+    @Query("SELECT * FROM messages WHERE chatId=:chatId ORDER BY date DESC LIMIT 1")
+    fun getLastChatMessage(chatId: String):List<ChatMessage>
+
     //Delete Messages of the Chat
     @Query("DELETE FROM messages WHERE chatId=:chatId")
     fun deleteChatMessages(chatId: String)

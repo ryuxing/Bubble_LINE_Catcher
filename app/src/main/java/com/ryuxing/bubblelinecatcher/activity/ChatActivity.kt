@@ -12,11 +12,11 @@ import android.os.Parcel
 import android.os.UserHandle
 import android.util.Log
 import android.view.ContextMenu
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Button
+import androidx.annotation.RequiresApi
 import androidx.core.graphics.drawable.IconCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,7 +27,10 @@ import com.ryuxing.bubblelinecatcher.R
 import com.ryuxing.bubblelinecatcher.data.ChatMessage
 import com.ryuxing.bubblelinecatcher.databinding.ActivityChatBinding
 import com.ryuxing.bubblelinecatcher.livedata.ChatViewModel
+import com.ryuxing.bubblelinecatcher.service.NotificationService
 import com.ryuxing.bubblelinecatcher.viewControl.MessageRecyclerAdapter
+import java.lang.Exception
+import android.view.Menu as Menu1
 
 class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
@@ -120,12 +123,20 @@ class ChatActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu1?): Boolean {
         menuInflater.inflate(R.menu.menu_chat,menu)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Log.d("menu version","hoge")
+            if(this.isLaunchedFromBubble){
+                Log.d("menu removed","hoge")
+                menu?.removeItem(R.id.item_open_with_bubble)
+            }
+        }
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         when(item.itemId){
             R.id.item_open_with_LINE ->{
                 val intent = Intent().also { i->
@@ -137,6 +148,26 @@ class ChatActivity : AppCompatActivity() {
                     i.putExtra("shortcutFromOS",false)
                 }
                 startActivity(intent)
+                return true
+            }
+            R.id.item_open_with_bubble ->{
+                val notificationService = NotificationService()
+                try{
+                    val chat = App.dataManager.cDao.getChat(chatId)[0]
+                    val message = App.dataManager.mDao.getLastChatMessage(chatId)[0]
+                    notificationService.sendNotification(
+                        message,
+                        chat,
+                        chat.createPerson(),
+                        true,
+                        this,
+                        autoExpandBubble = true,
+                        withStockUsing = false
+                    )
+                }catch(e: Exception){
+                    Log.w("Bubble_Error",e.stackTraceToString())
+                }
+
                 return true
             }
         }

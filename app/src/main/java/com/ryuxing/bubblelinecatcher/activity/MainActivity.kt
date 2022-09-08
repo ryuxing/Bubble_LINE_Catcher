@@ -123,7 +123,9 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
             mySnackbar.setBackgroundTint(getColor(R.color.md_theme_dark_error))
             mySnackbar.setTextColor(getColor(R.color.md_theme_dark_errorContainer))
             mySnackbar.setAction("権限を付与", View.OnClickListener {
+                //ToDo 元に戻す & InitをManifestで書き換える
                     startForResult.launch(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+                //startActivity(Intent(this,InitActivity::class.java))
                     mySnackbar.dismiss()
 
             })

@@ -25,7 +25,6 @@
             android:name=".activity.ChatActivity"
             android:exported="false"
             android:resizeableActivity="true"
-            android:documentLaunchMode="always"
             android:theme="@style/Theme.BubbleLINECatcher">
             <intent-filter>
                 <data

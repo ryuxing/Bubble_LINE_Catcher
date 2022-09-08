@@ -2,27 +2,17 @@ package com.ryuxing.bubblelinecatcher.activity
 
 
 import android.content.Intent
-import android.content.pm.LauncherApps
-import android.content.pm.PackageManager
-import android.content.pm.ShortcutManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcel
-import android.os.UserHandle
 import android.util.Log
-import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
 import android.widget.Button
-import androidx.annotation.RequiresApi
-import androidx.core.graphics.drawable.IconCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ryuxing.bubblelinecatcher.App
-import com.ryuxing.bubblelinecatcher.App.Companion.context
 import com.ryuxing.bubblelinecatcher.R
 import com.ryuxing.bubblelinecatcher.data.ChatMessage
 import com.ryuxing.bubblelinecatcher.databinding.ActivityChatBinding
@@ -37,6 +27,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var rv:RecyclerView
     private var chatId =""
     private var unread = 0
+    val hash = this.hashCode()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //IntentからChatId取得
@@ -50,7 +41,7 @@ class ChatActivity : AppCompatActivity() {
 
         binding = ActivityChatBinding.inflate(layoutInflater).apply { setContentView(this.root) }
         val messageList : List<ChatMessage> = App.dataManager.mDao.getMessages(chatId)
-        val messageAdapter = MessageRecyclerAdapter(messageList)
+        val messageAdapter = MessageRecyclerAdapter(chatId)
         val layoutManager = LinearLayoutManager(this)
         rv = findViewById<RecyclerView>(R.id.message_recycler_view)
         rv.setHasFixedSize(true)
@@ -69,6 +60,8 @@ class ChatActivity : AppCompatActivity() {
         Log.d("COUNT",messageAdapter.itemCount.toString())
         //LiveDataを定義
         val viewModel = ChatViewModel.getChatViewModel(chatId)
+        Log.d("Activity_HASH", "Activity ${hash} is ${this.isLaunchedFromBubble}")
+        viewModel.register()
         val observer = Observer<HashMap<Long,ChatMessage>>{
             if(it.isEmpty()){
                return@Observer
@@ -76,7 +69,7 @@ class ChatActivity : AppCompatActivity() {
                 val prevPos = layoutManager.findLastVisibleItemPosition()
                 val prevItem= messageAdapter.itemCount-1
                 val count = messageAdapter.updateMessages(it)
-                viewModel.receiveMessage()
+                viewModel.receiveMessage(hash)
                 App.dataManager.read(chatId)
                 Log.d("Scroll","prevPos="+prevPos+", prevItem=prevItem")
                 //スクロールするかどうか
@@ -119,7 +112,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        ChatViewModel.removeChatViewModel(chatId)
+        ChatViewModel.unbindChatViewModel(chatId)
         super.onDestroy()
     }
 

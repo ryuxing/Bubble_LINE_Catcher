@@ -15,8 +15,8 @@ class ChatViewModel: ViewModel() {
             }
             return chatViewModelList[chatId]!!
         }
-        fun removeChatViewModel(chatId: String) {
-            chatViewModelList.remove(chatId)
+        fun unbindChatViewModel(chatId: String) {
+            if(chatViewModelList[chatId]!!.unregister()) chatViewModelList.remove(chatId)
         }
         fun addMessageToChatView(message:ChatMessage){
             if(chatViewModelList.containsKey(message.chatId)){
@@ -26,14 +26,28 @@ class ChatViewModel: ViewModel() {
         }
     }
     val messages = MutableLiveData<HashMap<Long,ChatMessage>>()
-
+    var observerCount = 0
+    var receiveCount = 0
     fun addMessage(message:ChatMessage){
         var msgList = messages.value ?: HashMap<Long,ChatMessage>()
         msgList[message.msgId] = message
         messages.value = msgList
+        receiveCount = 0
         Log.d("CVM_addMessage", message.chatId + " , "+message.msgId)
     }
-    fun receiveMessage(){
-        messages.value = HashMap<Long,ChatMessage>()
+    fun receiveMessage(hash:Int){
+        Log.d("RECEIVE_FROM","Receive from ${hash}.  obs = ${observerCount} ,rcv = ${receiveCount}")
+        if(observerCount <= receiveCount){
+            messages.value = HashMap<Long,ChatMessage>()
+        }
+        receiveCount+=1
+    }
+    fun register(){
+
+        observerCount+=1
+    }
+    fun unregister():Boolean{
+        observerCount-=1
+        return observerCount<=0
     }
 }

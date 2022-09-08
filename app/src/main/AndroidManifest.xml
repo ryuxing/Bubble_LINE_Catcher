@@ -5,6 +5,9 @@
     <queries>
         <package android:name="jp.naver.line.android" />
     </queries>
+    <uses-sdk
+        android:targetSdkVersion="32"
+        android:minSdkVersion="30" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -17,9 +20,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BubbleLINECatcher">
         <activity
-            android:name=".InitialActivity"
+            android:name=".activity.InitActivity"
             android:exported="false"
-            android:label="@string/title_activity_initial"
             android:theme="@style/Theme.BubbleLINECatcher" />
         <activity
             android:name=".activity.ChatActivity"
@@ -44,6 +46,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".service.NotificationLoggerService"
             android:exported="true"
@@ -54,4 +57,5 @@
             </intent-filter>
         </service>
     </application>
+
 </manifest>

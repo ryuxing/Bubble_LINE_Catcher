@@ -8,6 +8,7 @@
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1315" />
         <entry key="app/src/main/res/drawable/ic_baseline_brightness_1_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_group_24.xml" value="0.1305" />
+        <entry key="app/src/main/res/drawable/ic_baseline_picture_in_picture_alt_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_visibility_off_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.1125" />
@@ -16,9 +17,12 @@
         <entry key="app/src/main/res/drawable/message_outgoing.xml" value="0.1315" />
         <entry key="app/src/main/res/drawable/open_in_new_24.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_chat.xml" value="0.12536443148688048" />
+        <entry key="app/src/main/res/layout/activity_init.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17022636086240456" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.2515625" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.2515625" />
+        <entry key="app/src/main/res/layout/fragment_init_description.xml" value="0.23728813559322035" />
+        <entry key="app/src/main/res/layout/fragment_init_grant_permission.xml" value="0.1933876811594203" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.2515625" />
         <entry key="app/src/main/res/layout/item_chat.xml" value="0.33670625232514895" />
         <entry key="app/src/main/res/layout/item_message.xml" value="0.47477064220183485" />
@@ -27,6 +31,8 @@
         <entry key="app/src/main/res/layout/item_message_sticky.xml" value="0.11041666666666666" />
         <entry key="app/src/main/res/layout/item_message_text.xml" value="0.8083231608072918" />
         <entry key="app/src/main/res/layout/settings_activity.xml" value="0.12234042553191489" />
+        <entry key="app/src/main/res/layout/snackbar_main_notification_permission_warning.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/snackbar_notification_permission.xml" value="0.1" />
         <entry key="app/src/main/res/layout/switch_item.xml" value="0.12234042553191489" />
         <entry key="app/src/main/res/menu/menu_chat.xml" value="0.2515625" />
         <entry key="app/src/main/res/menu/menu_chat_item.xml" value="0.2529411764705882" />

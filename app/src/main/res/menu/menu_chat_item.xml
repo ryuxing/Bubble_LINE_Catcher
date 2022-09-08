@@ -3,10 +3,8 @@
 
     <item
         android:id="@+id/menu_chat_item_read"
-        android:title="read"
-        android:icon="@drawable/ic_baseline_read_add_check_24" />
+        android:title="read" />
     <item
         android:id="@+id/menu_chat_item_delete"
-        android:title="delete"
-        android:icon="@drawable/ic_baseline_delete_24" />
+        android:title="delete" />
 </menu>

@@ -21,7 +21,7 @@ class MyDate {
                 formatter = DateTimeFormatter.ofPattern("HH:mm")
 
             }else if(time > refMonths){
-                formatter = DateTimeFormatter.ofPattern("dd"+ App.context.resources.getString(R.string.unit_day)+" (E) HH:mm")
+                formatter = DateTimeFormatter.ofPattern("d"+ App.context.resources.getString(R.string.unit_day)+" (E) HH:mm")
             }else if(time > refYears){
                 formatter = DateTimeFormatter.ofPattern("MM/dd(E) HH:mm")
             }else{

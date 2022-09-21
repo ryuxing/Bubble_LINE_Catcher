@@ -37,7 +37,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginVertical="20dp"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/message_incoming"
         android:backgroundTint="@color/chat_sender"
         android:paddingLeft="15dp"
@@ -45,24 +44,40 @@
         android:paddingRight="20dp"
         android:paddingBottom="15dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/open_Line"
-        app:layout_constraintEnd_toStartOf="@+id/open_Line"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/message_recycler_view"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/message_recycler_view" />
+
+    <ImageView
+        android:id="@+id/chat_activity_photo_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#AC000000"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/message_recycler_view"
+        app:layout_constraintEnd_toStartOf="@+id/message_recycler_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <Button
-        android:id="@+id/open_Line"
+        android:id="@+id/chat_activity_close_button"
+        style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="5dp"
-        android:text="Open LINE"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="-100dp"
+        android:contentDescription="Close"
+        android:visibility="gone"
+        app:icon="@drawable/ic_baseline_close_24"
+        app:iconSize="50dp"
+        app:iconTint="@color/md_theme_light_onPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@+id/textInputEditText" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.00999999" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ryuxing.bubblelinecatcher">
 
+    <uses-sdk
+        android:minSdkVersion="30"
+        android:targetSdkVersion="32" />
+
     <queries>
         <package android:name="jp.naver.line.android" />
     </queries>
-    <uses-sdk
-        android:targetSdkVersion="32"
-        android:minSdkVersion="30" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -20,11 +21,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BubbleLINECatcher">
         <activity
-            android:name=".activity.InitActivity"
+            android:name="com.ryuxing.bubblelinecatcher.activity.ChatImageListActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.ryuxing.bubblelinecatcher.activity.InitActivity"
             android:exported="false"
             android:theme="@style/Theme.BubbleLINECatcher" />
         <activity
-            android:name=".activity.ChatActivity"
+            android:name="com.ryuxing.bubblelinecatcher.activity.ChatActivity"
             android:exported="false"
             android:resizeableActivity="true"
             android:theme="@style/Theme.BubbleLINECatcher">
@@ -36,7 +40,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name="com.ryuxing.bubblelinecatcher.activity.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.BubbleLINECatcher">
@@ -48,7 +52,7 @@
         </activity>
 
         <service
-            android:name=".service.NotificationLoggerService"
+            android:name="com.ryuxing.bubblelinecatcher.service.NotificationLoggerService"
             android:exported="true"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">

@@ -1,6 +1,7 @@
 package com.ryuxing.bubblelinecatcher.activity
 
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -114,8 +115,9 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
     }
     private fun permissionGrantredAction():Boolean {
         val sets = NotificationManagerCompat.getEnabledListenerPackages(this)
-        if (sets != null && sets.contains(packageName)) {
+        if (sets != null && sets.contains(packageName) && false) {
             return true
+
         } else {
             //ToDo String対応とマテリアル対応
             val warn_string ="no permission."
@@ -123,7 +125,8 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
             mySnackbar.setBackgroundTint(getColor(R.color.md_theme_dark_error))
             mySnackbar.setTextColor(getColor(R.color.md_theme_dark_errorContainer))
             mySnackbar.setAction("権限を付与", View.OnClickListener {
-                    startForResult.launch(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+                    //startForResult.launch(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
+                    startActivity(Intent(this,InitActivity::class.java))
                     mySnackbar.dismiss()
 
             })

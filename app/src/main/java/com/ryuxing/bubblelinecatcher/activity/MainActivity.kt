@@ -18,6 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
 import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
@@ -122,8 +123,9 @@ class MainActivity : AppCompatActivity(), View.OnCreateContextMenuListener {
             //ToDo String対応とマテリアル対応
             val warn_string ="no permission."
             val mySnackbar = Snackbar.make(findViewById(R.id.main_coordinate_layout), "no permission.", Snackbar.LENGTH_INDEFINITE)
-            mySnackbar.setBackgroundTint(getColor(R.color.md_theme_dark_error))
-            mySnackbar.setTextColor(getColor(R.color.md_theme_dark_errorContainer))
+            mySnackbar.setBackgroundTint(MaterialColors.getColor(rv, com.google.android.material.R.attr.colorError))
+            mySnackbar.setTextColor(MaterialColors.getColor(rv, com.google.android.material.R.attr.colorOnError))
+            mySnackbar.setActionTextColor(MaterialColors.getColor(rv, com.google.android.material.R.attr.colorErrorContainer))
             mySnackbar.setAction("権限を付与", View.OnClickListener {
                     //startForResult.launch(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
                     startActivity(Intent(this,InitActivity::class.java))

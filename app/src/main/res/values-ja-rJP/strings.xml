@@ -12,4 +12,13 @@
 
     <!--個別実装単位-->
     <string name="unit_day">日</string>
+    <string name="init_permission_allow">許可</string>
+    <string name="init_permission_manage">編集</string>
+    <string name="init_permission_test_notification">通知をテストする</string>
+    <string name="init_permission_notification_access">通知のアクセス許可</string>
+    <string name="init_permission_notification_access_detail">通知からLINEの内容を取得しているため、通知へのアクセス許可が必要です。</string>
+    <string name="init_permission_check_checking">確認中...</string>
+    <string name="init_permission_check_okay">設定済</string>
+    <string name="init_permission_check_not_granted">未設定</string>
+    <string name="init_permission_data_access">ストレージのアクセス許可</string>
 </resources>

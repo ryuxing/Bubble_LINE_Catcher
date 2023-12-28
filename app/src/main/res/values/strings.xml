@@ -2,8 +2,9 @@
     <string name="app_name">Bubble LINE Catcher</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="init_permission_allow">Grant</string>
+    <string name="init_permission_manage">Manager</string>
+    <string name="init_permission_test_notification">Test Notification</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -20,7 +21,7 @@
     <string name="text_unknown_member">Unknown Member</string>
 
     <!--個別実装単位-->
-    <string name="unit_day">th</string>
+    <string name="unit_day">\'th\'</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -40,4 +41,14 @@
     <string name="channel_MSG_description">Notification of  the LINE message logged from notification</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="init_permission_notification_access">Noticication Access</string>
+    <string name="init_permission_notification_access_detail">In order to catch LINE notification, we request you to notification access permission.</string>
+    <string name="init_permission_check_checking">Checking...</string>
+    <string name="init_permission_check_okay">Granted</string>
+    <string name="init_permission_check_not_granted">Not Granted</string>
+    <string name="init_permission_data_access">Strage Access</string>
+    <string name="init_permission_bubble_notification">Bubble Notification</string>
+    <string name="init_permission_bubble_detail">"To catch notifications with bubble, turn on Bubble Notification."</string>
+    <string name="init_permission_allowed">Permission granted.</string>
+    <string name="init_permission_denied">Permission denied. Please try again.</string>
 </resources>

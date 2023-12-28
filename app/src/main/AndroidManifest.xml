@@ -13,12 +13,14 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+
     <application
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
+
         android:theme="@style/Theme.BubbleLINECatcher">
         <activity
             android:name="com.ryuxing.bubblelinecatcher.activity.ChatImageListActivity"
@@ -26,7 +28,11 @@
         <activity
             android:name="com.ryuxing.bubblelinecatcher.activity.InitActivity"
             android:exported="false"
-            android:theme="@style/Theme.BubbleLINECatcher" />
+            android:theme="@style/Theme.BubbleLINECatcher">
+            <intent-filter>
+                <action android:name="android.intent.action.OPEN_DOCUMENT_TREE" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.ryuxing.bubblelinecatcher.activity.ChatActivity"
             android:exported="false"

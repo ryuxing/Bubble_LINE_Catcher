@@ -153,6 +153,12 @@ class ChatActivity : AppCompatActivity() {
 
                 return true
             }
+            R.id.item_open_image_list ->{
+                val intent = Intent(this,ChatImageListActivity::class.java).also { i->
+                    i.putExtra("chatId",chatId)
+                }
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

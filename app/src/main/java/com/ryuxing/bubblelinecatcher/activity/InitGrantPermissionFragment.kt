@@ -4,7 +4,6 @@ import android.app.NotificationManager
 import android.app.NotificationManager.BUBBLE_PREFERENCE_ALL
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
@@ -19,7 +18,6 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.material3.Button
 import androidx.core.app.NotificationManagerCompat
 import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R

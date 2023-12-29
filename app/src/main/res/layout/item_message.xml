@@ -72,7 +72,7 @@
             android:backgroundTint="?attr/colorPrimaryContainer"
             android:padding="10dp"
             android:paddingStart="15dp"
-            android:scaleType="FitCenter"
+            android:scaleType="fitCenter"
             android:visibility="gone"
             app:srcCompat="@drawable/ic_baseline_photo_24" />
 

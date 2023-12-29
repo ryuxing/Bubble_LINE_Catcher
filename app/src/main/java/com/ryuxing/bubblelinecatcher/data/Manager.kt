@@ -1,10 +1,11 @@
 package com.ryuxing.bubblelinecatcher.data
 
+import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.ryuxing.bubblelinecatcher.activity.MainActivity
 import com.ryuxing.bubblelinecatcher.livedata.ChatViewModel
-import com.ryuxing.bubblelinecatcher.livedata.MainViewModel
 import com.ryuxing.bubblelinecatcher.service.NotificationService
+import java.io.File
 
 class Manager(db: Database) {
     val db = db
@@ -42,6 +43,30 @@ class Manager(db: Database) {
         cDao.readChat(chatId)
         MainActivity.mainViewModel.updateRead(chatId)
         Log.d("BLC_READED__Manager",chatId)
+    }
+    fun insertOldMessages(file :File){
+        //データ取得
+        //uri.
+        val oldDb = SQLiteDatabase.openDatabase(file,SQLiteDatabase.OpenParams.Builder().addOpenFlags(SQLiteDatabase.OPEN_READONLY).build())
+        //val db = super.getReadableDatabase()
+        val messageCursor = oldDb.query(
+            "messages",
+            arrayOf("msgId", "chatId", "message", "type", "sender", "date"),
+            null,
+            null,
+            null,
+            null,
+            null)
+        val chatCursor = oldDb.query(
+            "chats",
+            arrayOf("chatId", "chatName", "isGroup", "lastMsg", "lastSenderName", "lastSenderIcon", "lastDate", "hasUnread"),
+            null,
+            null,
+            null,
+            null,
+            null)
+        db.RestoreDao().restore(messageCursor,chatCursor)
+        oldDb.close()
     }
 
 }

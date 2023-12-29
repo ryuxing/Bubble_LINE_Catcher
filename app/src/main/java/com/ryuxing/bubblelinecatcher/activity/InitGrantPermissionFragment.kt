@@ -21,10 +21,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.Button
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.getSystemService
-import com.google.android.material.snackbar.Snackbar
+import com.ryuxing.bubblelinecatcher.App
 import com.ryuxing.bubblelinecatcher.R
+import java.io.File
+import java.lang.Exception
 
 class InitGrantPermissionFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.S)
@@ -56,6 +56,15 @@ class InitGrantPermissionFragment : Fragment() {
                 putExtra(DocumentsContract.EXTRA_INITIAL_URI,"Android/data/jp.naver.line.android")
             }
             startDocumentForResult.launch(intent)
+        })
+        //ファイル読み込み
+        val restoreButton :Button = view.findViewById(R.id.init_permission_notification_restore_button)
+        restoreButton.setOnClickListener(View.OnClickListener { _->
+            val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                setType("*/*")
+            }
+        startRestoreForResult.launch(intent)
         })
         return view
     }
@@ -111,4 +120,25 @@ class InitGrantPermissionFragment : Fragment() {
                 Toast.makeText(requireContext(), "Document access Granted.", Toast.LENGTH_SHORT).show()
             }
         }
+    val startRestoreForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        result: ActivityResult? ->
+        val dbUri = result?.data?.data ?: null
+        if (dbUri == null) {
+            Log.d("FilePick", "Failed.")
+            Toast.makeText(requireContext(),"File access FAILED!!!!",Toast.LENGTH_SHORT).show()
+        }else {
+            try{
+                var file  = File(requireActivity().externalCacheDir,"old_db.db")
+                val input = requireActivity().contentResolver.openInputStream(dbUri)?.readBytes()?: byteArrayOf()
+                file.writeBytes(input)
+                App.dataManager.insertOldMessages(file)
+                Toast.makeText(requireContext(),"File access success.",Toast.LENGTH_SHORT).show()
+
+            } catch (e:Exception){
+                Toast.makeText(requireContext(),"DB Restore FAILED!!!!",Toast.LENGTH_SHORT).show()
+                Log.w("EXCEPTION", e.stackTraceToString())
+            }
+        }
+
+    }
 }
